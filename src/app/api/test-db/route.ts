@@ -5,7 +5,7 @@ export async function GET() {
     try {
         // Test basic connection
         const supabase = createAdminClient()
-        const { data, error } = await supabase
+        const { error } = await supabase
             .from('packages')
             .select('count')
             .limit(1)

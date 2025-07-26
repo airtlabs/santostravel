@@ -3,10 +3,11 @@ import { BookingService } from '@/services/bookingService'
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const booking = await BookingService.getById(params.id)
+        const { id } = await params
+        const booking = await BookingService.getById(id)
 
         return NextResponse.json({ booking })
     } catch (error) {
@@ -20,12 +21,13 @@ export async function GET(
 
 export async function PUT(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params
         const bookingData = await request.json()
 
-        const updatedBooking = await BookingService.update(params.id, bookingData)
+        const updatedBooking = await BookingService.update(id, bookingData)
 
         return NextResponse.json({ booking: updatedBooking })
     } catch (error) {
@@ -39,12 +41,13 @@ export async function PUT(
 
 export async function PATCH(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params
         const updateData = await request.json()
 
-        const updatedBooking = await BookingService.update(params.id, updateData)
+        const updatedBooking = await BookingService.update(id, updateData)
 
         return NextResponse.json({ booking: updatedBooking })
     } catch (error) {
@@ -58,10 +61,11 @@ export async function PATCH(
 
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        await BookingService.delete(params.id)
+        const { id } = await params
+        await BookingService.delete(id)
 
         return NextResponse.json({ message: 'Booking deleted successfully' })
     } catch (error) {

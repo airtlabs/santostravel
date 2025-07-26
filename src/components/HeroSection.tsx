@@ -59,7 +59,7 @@ const HeroSection = () => {
                 style={{ objectFit: 'cover' }}
                 className="rounded-2xl"
                 priority={index < 2}
-                onError={(e) => {
+                onError={() => {
                   console.error(`Failed to load image for ${banner.title}:`, banner.bgImage);
                 }}
               />

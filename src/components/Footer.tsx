@@ -31,7 +31,7 @@ const Footer = () => {
                 <h3 className="text-lg font-semibold text-gray-900">Call us</h3>
               </div>
               <p className="text-gray-600 text-sm mb-2">
-                Request a quote or chat - we're here to help anytime!
+                Request a quote or chat - we&apos;re here to help anytime!
               </p>
               <div className="space-y-1">
                 <Link href="tel:18002279979" className="text-blue-600 hover:text-blue-800 font-medium block">
@@ -51,7 +51,7 @@ const Footer = () => {
                 <h3 className="text-lg font-semibold text-gray-900">Write to us</h3>
               </div>
               <p className="text-gray-600 text-sm mb-2">
-                We're always happy to help!
+                We&apos;re always happy to help!
               </p>
               <div className="space-y-1 text-sm">
                 <div>
@@ -166,7 +166,7 @@ const Footer = () => {
                 <li><Link href="/tour-managers" className="hover:text-white">Tour Managers</Link></li>
                 <li><Link href="/sales-partners" className="hover:text-white">Sales Partners</Link></li>
                 <li><Link href="/become-partner" className="hover:text-white">Become A Sales Partner</Link></li>
-                <li><Link href="/careers" className="hover:text-white">Careers We're Hiring!</Link></li>
+                <li><Link href="/careers" className="hover:text-white">Careers We&apos;re Hiring!</Link></li>
                 <li><Link href="/csr" className="hover:text-white">CSR Policy</Link></li>
                 <li><Link href="/portfolio" className="hover:text-white">Create Your Travel Portfolio</Link></li>
               </ul>

@@ -7,14 +7,10 @@ import {
     ArrowLeft,
     Save,
     Eye,
-    Plus,
-    Trash2,
     Upload,
     MapPin,
     Calendar,
     DollarSign,
-    Users,
-    Clock,
     Star
 } from 'lucide-react';
 
@@ -112,7 +108,7 @@ const EditPackagePage = () => {
         loadPackageData();
     }, [params.id]);
 
-    const handleInputChange = (field: string, value: any) => {
+    const handleInputChange = (field: string, value: string | number) => {
         setPackageData(prev => ({
             ...prev,
             [field]: value,
@@ -121,29 +117,35 @@ const EditPackagePage = () => {
     };
 
     const handleArrayChange = (field: string, index: number, value: string) => {
-        setPackageData(prev => ({
-            ...prev,
-            [field]: prev[field as keyof typeof prev].map((item: any, i: number) =>
-                i === index ? value : item
-            ),
-            updatedAt: new Date().toISOString()
-        }));
+        setPackageData(prev => {
+            const fieldArray = prev[field as keyof typeof prev] as string[];
+            return {
+                ...prev,
+                [field]: fieldArray.map((item: string, i: number) =>
+                    i === index ? value : item
+                ),
+                updatedAt: new Date().toISOString()
+            };
+        });
     };
 
     const addArrayItem = (field: string) => {
         setPackageData(prev => ({
             ...prev,
-            [field]: [...prev[field as keyof typeof prev], ''],
+            [field]: [...(prev[field as keyof typeof prev] as string[]), ''],
             updatedAt: new Date().toISOString()
         }));
     };
 
     const removeArrayItem = (field: string, index: number) => {
-        setPackageData(prev => ({
-            ...prev,
-            [field]: prev[field as keyof typeof prev].filter((_: any, i: number) => i !== index),
-            updatedAt: new Date().toISOString()
-        }));
+        setPackageData(prev => {
+            const fieldArray = prev[field as keyof typeof prev] as string[];
+            return {
+                ...prev,
+                [field]: fieldArray.filter((_: string, i: number) => i !== index),
+                updatedAt: new Date().toISOString()
+            };
+        });
     };
 
     const addItineraryDay = () => {
@@ -211,7 +213,7 @@ const EditPackagePage = () => {
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
                     <h1 className="text-2xl font-bold text-gray-900 mb-4">Package Not Found</h1>
-                    <p className="text-gray-600 mb-6">The package you're looking for doesn't exist.</p>
+                    <p className="text-gray-600 mb-6">The package you&apos;re looking for doesn&apos;t exist.</p>
                     <Link
                         href="/admin/dashboard"
                         className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg transition-colors"

@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
-const SignInPage = () => {
+const SignInForm = () => {
     const searchParams = useSearchParams();
     const [isSignUp, setIsSignUp] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -63,7 +63,7 @@ const SignInPage = () => {
                     setError('Invalid email or password');
                 }
             }
-        } catch (error) {
+        } catch {
             setError('An error occurred. Please try again.');
         } finally {
             setLoading(false);
@@ -237,6 +237,14 @@ const SignInPage = () => {
                 </div>
             </div>
         </div>
+    );
+};
+
+const SignInPage = () => {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <SignInForm />
+        </Suspense>
     );
 };
 

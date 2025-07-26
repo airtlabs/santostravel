@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Search, Phone, ChevronDown, User, MapPin, Calendar, Globe, Users, Briefcase, Gift, HelpCircle, Clock, LogOut } from 'lucide-react';
+import { Menu, X, Search, Phone, ChevronDown, User, MapPin, Calendar, Globe, Users, Briefcase, Gift, Clock, LogOut } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 const Header = () => {
@@ -356,7 +356,7 @@ const Header = () => {
                 <div>
                   <h3 className="text-gray-900 font-bold mb-3 text-lg border-b pb-2">Tour Packages By Zone</h3>
                   <ul className="space-y-2">
-                    {navigationItems[0].dropdownContent?.zones.map((zone) => (
+                    {navigationItems[0].dropdownContent?.zones?.map((zone) => (
                       <li key={zone.name}>
                         <Link href={zone.href} className="text-gray-700 hover:text-yellow-600 block py-1">
                           {zone.name}
@@ -370,7 +370,7 @@ const Header = () => {
                 <div className="col-span-2">
                   <h3 className="text-gray-900 font-bold mb-3 text-lg border-b pb-2">Tour Packages By State</h3>
                   <div className="grid grid-cols-3 gap-4">
-                    {navigationItems[0].dropdownContent?.states.slice(0, 9).map((state) => (
+                    {navigationItems[0].dropdownContent?.states?.slice(0, 9).map((state) => (
                       <Link key={state.name} href={state.href} className="group">
                         <div className="bg-white rounded-lg shadow-sm border hover:shadow-md transition duration-300 overflow-hidden">
                           <div className="relative h-24">
@@ -398,7 +398,7 @@ const Header = () => {
                 <div>
                   <h3 className="text-gray-900 font-bold mb-3 text-lg border-b pb-2">Tour Packages By Interest</h3>
                   <ul className="space-y-2 mb-4">
-                    {navigationItems[0].dropdownContent?.interests.map((interest) => (
+                    {navigationItems[0].dropdownContent?.interests?.map((interest) => (
                       <li key={interest.name}>
                         <Link href={interest.href} className="text-gray-700 hover:text-yellow-600 block py-1">
                           {interest.name}
@@ -409,7 +409,7 @@ const Header = () => {
 
                   <h3 className="text-gray-900 font-bold mb-3 text-lg border-b pb-2">Tour Packages By Season</h3>
                   <ul className="space-y-2 mb-4">
-                    {navigationItems[0].dropdownContent?.seasons.map((season) => (
+                    {navigationItems[0].dropdownContent?.seasons?.map((season) => (
                       <li key={season.name}>
                         <Link href={season.href} className="text-gray-700 hover:text-yellow-600 block py-1">
                           {season.name}
@@ -420,7 +420,7 @@ const Header = () => {
 
                   <h3 className="text-gray-900 font-bold mb-3 text-lg border-b pb-2">Tour Packages By Duration</h3>
                   <ul className="space-y-2">
-                    {navigationItems[0].dropdownContent?.durations.map((duration) => (
+                    {navigationItems[0].dropdownContent?.durations?.map((duration) => (
                       <li key={duration.name}>
                         <Link href={duration.href} className="text-gray-700 hover:text-yellow-600 block py-1">
                           {duration.name}
@@ -438,7 +438,7 @@ const Header = () => {
                 <div>
                   <h3 className="text-gray-900 font-bold mb-3 text-lg border-b pb-2">Tour Packages By Continent</h3>
                   <ul className="space-y-2">
-                    {navigationItems[1].dropdownContent?.continents.map((continent) => (
+                    {navigationItems[1].dropdownContent?.continents?.map((continent) => (
                       <li key={continent.name}>
                         <Link href={continent.href} className="text-gray-700 hover:text-yellow-600 block py-1">
                           {continent.name}
@@ -449,7 +449,7 @@ const Header = () => {
 
                   <h3 className="text-gray-900 font-bold mb-3 mt-6 text-lg border-b pb-2">Tour Packages By Duration</h3>
                   <ul className="space-y-2">
-                    {navigationItems[1].dropdownContent?.durations.map((duration) => (
+                    {navigationItems[1].dropdownContent?.durations?.map((duration) => (
                       <li key={duration.name}>
                         <Link href={duration.href} className="text-gray-700 hover:text-yellow-600 block py-1">
                           {duration.name}
@@ -463,7 +463,7 @@ const Header = () => {
                 <div className="col-span-3">
                   <h3 className="text-gray-900 font-bold mb-3 text-lg border-b pb-2">Popular Countries</h3>
                   <div className="grid grid-cols-3 gap-4">
-                    {navigationItems[1].dropdownContent?.countries.map((country) => (
+                    {navigationItems[1].dropdownContent?.countries?.map((country) => (
                       <Link key={country.name} href={country.href} className="group">
                         <div className="bg-white rounded-lg shadow-sm border hover:shadow-md transition duration-300 overflow-hidden">
                           <div className="relative h-24">
@@ -498,7 +498,7 @@ const Header = () => {
 
             {activeMenu === 'Speciality Tours' && (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                {navigationItems[2].dropdownContent?.categories.map((category) => (
+                {navigationItems[2].dropdownContent?.categories?.map((category) => (
                   <Link key={category.name} href={category.href} className="flex items-center p-3 rounded-lg hover:bg-gray-100 transition duration-300">
                     {category.icon}
                     <span className="text-gray-800 font-medium">{category.name}</span>
@@ -509,7 +509,7 @@ const Header = () => {
 
             {activeMenu === 'Customized Holidays' && (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {navigationItems[3].dropdownContent?.categories.map((category) => (
+                {navigationItems[3].dropdownContent?.categories?.map((category) => (
                   <Link key={category.name} href={category.href} className="flex items-center p-3 rounded-lg hover:bg-gray-100 transition duration-300">
                     {category.icon}
                     <span className="text-gray-800 font-medium">{category.name}</span>
@@ -520,7 +520,7 @@ const Header = () => {
 
             {activeMenu === 'Corporate Travel' && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {navigationItems[4].dropdownContent?.categories.map((category) => (
+                {navigationItems[4].dropdownContent?.categories?.map((category) => (
                   <Link key={category.name} href={category.href} className="flex items-center p-3 rounded-lg hover:bg-gray-100 transition duration-300">
                     {category.icon}
                     <span className="text-gray-800 font-medium">{category.name}</span>
@@ -563,7 +563,7 @@ const Header = () => {
                       <>
                         <div className="py-1">
                           <div className="text-yellow-400 font-medium py-1">Tour Packages By Zone</div>
-                          {navigationItems[0].dropdownContent?.zones.map((zone) => (
+                          {navigationItems[0].dropdownContent?.zones?.map((zone) => (
                             <Link
                               key={zone.name}
                               href={zone.href}
@@ -576,7 +576,7 @@ const Header = () => {
                         </div>
                         <div className="py-1">
                           <div className="text-yellow-400 font-medium py-1">Popular States</div>
-                          {navigationItems[0].dropdownContent?.states.slice(0, 5).map((state) => (
+                          {navigationItems[0].dropdownContent?.states?.slice(0, 5).map((state) => (
                             <Link
                               key={state.name}
                               href={state.href}
@@ -594,7 +594,7 @@ const Header = () => {
                       <>
                         <div className="py-1">
                           <div className="text-yellow-400 font-medium py-1">Tour Packages By Continent</div>
-                          {navigationItems[1].dropdownContent?.continents.map((continent) => (
+                          {navigationItems[1].dropdownContent?.continents?.map((continent) => (
                             <Link
                               key={continent.name}
                               href={continent.href}
@@ -610,7 +610,7 @@ const Header = () => {
 
                     {item.name === 'Speciality Tours' && (
                       <div className="py-1">
-                        {navigationItems[2].dropdownContent?.categories.map((category) => (
+                        {navigationItems[2].dropdownContent?.categories?.map((category) => (
                           <Link
                             key={category.name}
                             href={category.href}
@@ -626,7 +626,7 @@ const Header = () => {
 
                     {item.name === 'Customized Holidays' && (
                       <div className="py-1">
-                        {navigationItems[3].dropdownContent?.categories.map((category) => (
+                        {navigationItems[3].dropdownContent?.categories?.map((category) => (
                           <Link
                             key={category.name}
                             href={category.href}
@@ -642,7 +642,7 @@ const Header = () => {
 
                     {item.name === 'Corporate Travel' && (
                       <div className="py-1">
-                        {navigationItems[4].dropdownContent?.categories.map((category) => (
+                        {navigationItems[4].dropdownContent?.categories?.map((category) => (
                           <Link
                             key={category.name}
                             href={category.href}

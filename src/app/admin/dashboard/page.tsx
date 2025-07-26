@@ -3,6 +3,35 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import AdminLayout from '@/components/AdminLayout';
+// TODO: Replace this with the correct import if available in '@/types/database'
+export interface Package {
+    id: string;
+    title: string;
+    destination: string;
+    category: string;
+    price: number;
+    duration: string;
+    status: string;
+    updated_at: string;
+    // Add other fields as needed
+}
+
+interface DashboardStats {
+    packages: {
+        total: number;
+        published: number;
+        draft: number;
+        archived?: number;
+    };
+    bookings: {
+        total: number;
+        confirmed: number;
+        pending: number;
+    };
+    totalRevenue: number;
+    conversionRate?: number | string;
+}
+
 import {
     Plus,
     Search,
@@ -10,21 +39,19 @@ import {
     Edit,
     Trash2,
     Eye,
-    MoreHorizontal,
-    Package,
+    Package as PackageIcon,
     Users,
     DollarSign,
     TrendingUp,
     Calendar,
-    MapPin,
     Star
 } from 'lucide-react';
 
 const AdminDashboard = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filterStatus, setFilterStatus] = useState('all');
-    const [packages, setPackages] = useState<any[]>([]);
-    const [stats, setStats] = useState<any>(null);
+    const [packages, setPackages] = useState<Package[]>([]);
+    const [stats, setStats] = useState<DashboardStats | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -53,7 +80,7 @@ const AdminDashboard = () => {
             const statsData = await statsResponse.json();
 
             setPackages(packagesData.packages || []);
-            setStats(statsData.stats);
+            setStats(statsData);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to fetch data');
             console.error('Error fetching data:', err);
@@ -198,7 +225,7 @@ const AdminDashboard = () => {
                                     <p className="text-3xl font-bold text-gray-900">{stats?.packages?.total || 0}</p>
                                 </div>
                                 <div className="bg-blue-100 p-3 rounded-full">
-                                    <Package className="h-6 w-6 text-blue-600" />
+                                    <PackageIcon className="h-6 w-6 text-blue-600" />
                                 </div>
                             </div>
                             <div className="mt-4">
@@ -337,7 +364,7 @@ const AdminDashboard = () => {
                                     {filteredPackages.length === 0 ? (
                                         <tr>
                                             <td colSpan={8} className="px-6 py-12 text-center">
-                                                <Package className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                                                <PackageIcon className="h-12 w-12 mx-auto text-gray-400 mb-4" />
                                                 <h3 className="text-lg font-medium text-gray-900 mb-2">No packages found</h3>
                                                 <p className="text-gray-500 mb-4">
                                                     {searchQuery || filterStatus !== 'all'

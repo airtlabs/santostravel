@@ -15,7 +15,7 @@ const ProtectedRoute = ({
     requireAdmin = false, 
     redirectTo = '/signin' 
 }: ProtectedRouteProps) => {
-    const { user, loading, isAuthenticated, isAdmin } = useAuth();
+    const { loading, isAuthenticated, isAdmin } = useAuth();
     const router = useRouter();
 
     useEffect(() => {

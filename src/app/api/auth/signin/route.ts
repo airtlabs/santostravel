@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
 
 // Simple in-memory user store (in production, use a proper database)
 const users = [
@@ -42,7 +41,8 @@ export async function POST(request: NextRequest) {
         }
 
         // Return user data (without password)
-        const { password: _, ...userWithoutPassword } = user;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { password: userPassword, ...userWithoutPassword } = user;
         
         return NextResponse.json({
             success: true,

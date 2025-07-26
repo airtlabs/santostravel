@@ -1,7 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import { Database } from '@/types/database'
 
-type Package = Database['public']['Tables']['packages']['Row']
 type PackageInsert = Database['public']['Tables']['packages']['Insert']
 type PackageUpdate = Database['public']['Tables']['packages']['Update']
 

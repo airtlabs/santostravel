@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Heart, Star, MapPin, Calendar, Users, Plane, Car, Eye, FileText, User } from 'lucide-react';
+import { Heart, Star } from 'lucide-react';
 import { useState } from 'react';
 import { usePackages } from '@/hooks/usePackages';
 

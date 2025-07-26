@@ -14,8 +14,6 @@ import {
     MapPin,
     Calendar,
     DollarSign,
-    Users,
-    Clock,
     Star
 } from 'lucide-react';
 
@@ -70,7 +68,7 @@ const NewPackagePage = () => {
         tags: ['']
     });
 
-    const handleInputChange = (field: string, value: any) => {
+    const handleInputChange = (field: string, value: string | number) => {
         setPackageData(prev => ({
             ...prev,
             [field]: value
@@ -78,12 +76,15 @@ const NewPackagePage = () => {
     };
 
     const handleArrayChange = (field: string, index: number, value: string) => {
-        setPackageData(prev => ({
-            ...prev,
-            [field]: prev[field as keyof typeof prev].map((item: any, i: number) =>
-                i === index ? value : item
-            )
-        }));
+        setPackageData(prev => {
+            const fieldArray = prev[field as keyof typeof prev] as string[];
+            return {
+                ...prev,
+                [field]: fieldArray.map((item: string, i: number) =>
+                    i === index ? value : item
+                )
+            };
+        });
     };
 
     const addArrayItem = (field: string) => {
@@ -94,10 +95,13 @@ const NewPackagePage = () => {
     };
 
     const removeArrayItem = (field: string, index: number) => {
-        setPackageData(prev => ({
-            ...prev,
-            [field]: prev[field as keyof typeof prev].filter((_: any, i: number) => i !== index)
-        }));
+        setPackageData(prev => {
+            const fieldArray = prev[field as keyof typeof prev] as string[];
+            return {
+                ...prev,
+                [field]: fieldArray.filter((_: string, i: number) => i !== index)
+            };
+        });
     };
 
     const addItineraryDay = () => {
@@ -432,7 +436,7 @@ const NewPackagePage = () => {
                                         {/* Inclusions */}
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                What's Included
+                                                What&apos;s Included
                                             </label>
                                             <div className="space-y-2">
                                                 {packageData.inclusions.map((inclusion, index) => (
@@ -469,7 +473,7 @@ const NewPackagePage = () => {
                                         {/* Exclusions */}
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                What's Not Included
+                                                What&apos;s Not Included
                                             </label>
                                             <div className="space-y-2">
                                                 {packageData.exclusions.map((exclusion, index) => (

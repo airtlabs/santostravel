@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { BookingService } from '@/services/bookingService'
 import { Database } from '@/types/database'
 
@@ -8,11 +8,11 @@ export function useBookings(filters?: {
     status?: string
     paymentStatus?: string
 }) {
-    const [bookings, setBookings] = useState<any[]>([])
+    const [bookings, setBookings] = useState<Booking[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
-    const fetchBookings = async () => {
+    const fetchBookings = useCallback(async () => {
         try {
             setLoading(true)
             setError(null)
@@ -23,17 +23,17 @@ export function useBookings(filters?: {
         } finally {
             setLoading(false)
         }
-    }
+    }, [filters])
 
     useEffect(() => {
         fetchBookings()
-    }, [filters?.status, filters?.paymentStatus])
+    }, [fetchBookings])
 
     return { bookings, loading, error, refetch: fetchBookings }
 }
 
 export function useBooking(id: string) {
-    const [booking, setBooking] = useState<any | null>(null)
+    const [booking, setBooking] = useState<Booking | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 

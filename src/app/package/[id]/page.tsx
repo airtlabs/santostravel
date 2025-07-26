@@ -17,15 +17,8 @@ import {
     CheckCircle,
     ChevronDown,
     ChevronUp,
-    Plane,
-    Hotel,
     Car,
-    Camera,
-    Utensils,
     ArrowLeft,
-    Share2,
-    Heart,
-    Download,
     AlertTriangle,
     UserCheck
 } from 'lucide-react';
@@ -37,7 +30,6 @@ const PackageDetailPage = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [activeTab, setActiveTab] = useState('overview');
     const [expandedDay, setExpandedDay] = useState<number | null>(null);
-    const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const [bookingLoading, setBookingLoading] = useState(false);
     const [bookingForm, setBookingForm] = useState({
         checkIn: '',
@@ -81,7 +73,7 @@ const PackageDetailPage = () => {
                 <div className="text-center">
                     <AlertTriangle className="h-16 w-16 text-red-500 mx-auto mb-4" />
                     <h1 className="text-2xl font-bold text-gray-900 mb-2">Package Not Found</h1>
-                    <p className="text-gray-600 mb-6">The package you're looking for doesn't exist or has been removed.</p>
+                    <p className="text-gray-600 mb-6">The package you&apos;re looking for doesn&apos;t exist or has been removed.</p>
                     <Link
                         href="/packages"
                         className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
@@ -108,7 +100,6 @@ const PackageDetailPage = () => {
 
         try {
             // Calculate total amount
-            const totalDays = Math.max(1, Math.ceil((new Date(bookingForm.checkOut).getTime() - new Date(bookingForm.checkIn).getTime()) / (1000 * 60 * 60 * 24)));
             const totalParticipants = bookingForm.adults + bookingForm.children;
             const totalAmount = packageData.price * totalParticipants;
 
@@ -374,7 +365,7 @@ const PackageDetailPage = () => {
                             <div className="space-y-6">
                                 {packageData.inclusions && packageData.inclusions.length > 0 && (
                                     <div>
-                                        <h2 className="text-2xl font-bold mb-4 text-green-600">What's Included</h2>
+                                        <h2 className="text-2xl font-bold mb-4 text-green-600">What&apos;s Included</h2>
                                         <div className="space-y-3">
                                             {packageData.inclusions.map((item, index) => (
                                                 <div key={index} className="flex items-start gap-3">
@@ -388,7 +379,7 @@ const PackageDetailPage = () => {
 
                                 {packageData.exclusions && packageData.exclusions.length > 0 && (
                                     <div>
-                                        <h2 className="text-2xl font-bold mb-4 text-red-600">What's Not Included</h2>
+                                        <h2 className="text-2xl font-bold mb-4 text-red-600">What&apos;s Not Included</h2>
                                         <div className="space-y-3">
                                             {packageData.exclusions.map((item, index) => (
                                                 <div key={index} className="flex items-start gap-3">

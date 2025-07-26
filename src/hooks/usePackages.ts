@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { PackageService } from '@/services/packageService'
 import { Database } from '@/types/database'
 
@@ -13,7 +13,7 @@ export function usePackages(filters?: {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
-    const fetchPackages = async () => {
+    const fetchPackages = useCallback(async () => {
         try {
             setLoading(true)
             setError(null)
@@ -24,11 +24,11 @@ export function usePackages(filters?: {
         } finally {
             setLoading(false)
         }
-    }
+    }, [filters])
 
     useEffect(() => {
         fetchPackages()
-    }, [filters?.status, filters?.category, filters?.destination])
+    }, [fetchPackages])
 
     return { packages, loading, error, refetch: fetchPackages }
 }

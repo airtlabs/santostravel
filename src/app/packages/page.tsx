@@ -111,7 +111,7 @@ const PackagesPage = () => {
                     {/* Results Summary */}
                     <div className="mt-4 text-sm text-gray-600">
                         Showing {filteredPackages.length} of {dbPackages.length} packages
-                        {searchQuery && <span> for "{searchQuery}"</span>}
+                        {searchQuery && <span> for &quot;{searchQuery}&quot;</span>}
                         {selectedFilter !== 'all' && <span> in {selectedFilter} category</span>}
                         {statusFilter !== 'published' && <span> with {statusFilter} status</span>}
                     </div>

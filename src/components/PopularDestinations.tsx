@@ -6,7 +6,7 @@ import { usePackages } from '@/hooks/usePackages';
 import { useMemo } from 'react';
 
 const PopularDestinations = () => {
-    const { packages, loading } = usePackages();
+    const { packages } = usePackages();
 
     const destinationStats = useMemo(() => {
         const stats = new Map();
@@ -125,13 +125,13 @@ const PopularDestinations = () => {
                                     <div className="flex flex-wrap gap-4 mb-6">
                                         {/* Customer testimonial bubbles */}
                                         <div className="bg-white/90 text-gray-800 p-3 rounded-2xl text-sm max-w-xs">
-                                            <p>"After years of planning, this trip was amazing! The memories will last a lifetime."</p>
+                                            <p>&quot;After years of planning, this trip was amazing! The memories will last a lifetime.&quot;</p>
                                         </div>
                                         <div className="bg-white/90 text-gray-800 p-3 rounded-2xl text-sm max-w-xs ml-auto">
-                                            <p>"The best part? Everyone was my age. Nothing, no pressure!"</p>
+                                            <p>&quot;The best part? Everyone was my age. Nothing, no pressure!&quot;</p>
                                         </div>
                                         <div className="bg-white/90 text-gray-800 p-3 rounded-2xl text-sm max-w-xs">
-                                            <p>"I travelled solo, but never felt alone. Thanks to Santos.travel's group tours!"</p>
+                                            <p>&quot;I travelled solo, but never felt alone. Thanks to Santos.travel&apos;s group tours!&quot;</p>
                                         </div>
                                     </div>
                                 </div>
@@ -157,7 +157,7 @@ const PopularDestinations = () => {
                     {/* Right Side - Destination Grid */}
                     <div className="lg:col-span-2">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            {destinations.map((destination, index) => (
+                            {destinations.map((destination) => (
                                 <Link key={destination.name} href={`/destinations/${destination.name.toLowerCase().replace(/\s+/g, '-')}`}>
                                     <div className={`relative bg-gradient-to-br ${destination.bgColor} rounded-xl overflow-hidden group cursor-pointer transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl`}>
                                         {/* Background Image */}

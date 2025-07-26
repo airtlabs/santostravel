@@ -1,20 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import {
     Search,
-    Filter,
     Calendar,
     Users,
     MapPin,
     Phone,
     Mail,
-    CreditCard,
-    Clock,
-    CheckCircle,
-    XCircle,
-    AlertCircle,
     Edit,
     Trash2,
     Eye
@@ -46,11 +40,7 @@ const AdminBookingsPage = () => {
     const [statusFilter, setStatusFilter] = useState('all');
     const [paymentFilter, setPaymentFilter] = useState('all');
 
-    useEffect(() => {
-        fetchBookings();
-    }, [statusFilter, paymentFilter]);
-
-    const fetchBookings = async () => {
+    const fetchBookings = useCallback(async () => {
         try {
             setLoading(true);
             const params = new URLSearchParams();
@@ -60,14 +50,18 @@ const AdminBookingsPage = () => {
             const response = await fetch(`/api/bookings?${params.toString()}`);
             if (response.ok) {
                 const data = await response.json();
-                setBookings(data.bookings);
+                setBookings(data);
             }
         } catch (error) {
-            console.error('Failed to fetch bookings:', error);
+            console.error('Error fetching bookings:', error);
         } finally {
             setLoading(false);
         }
-    };
+    }, [statusFilter, paymentFilter]);
+
+    useEffect(() => {
+        fetchBookings();
+    }, [fetchBookings]);
 
     const updateBookingStatus = async (bookingId: string, status: string) => {
         try {
@@ -124,15 +118,6 @@ const AdminBookingsPage = () => {
             case 'pending': return 'bg-yellow-100 text-yellow-800';
             case 'failed': return 'bg-red-100 text-red-800';
             default: return 'bg-gray-100 text-gray-800';
-        }
-    };
-
-    const getStatusIcon = (status: string) => {
-        switch (status) {
-            case 'confirmed': return <CheckCircle className="h-4 w-4" />;
-            case 'pending': return <Clock className="h-4 w-4" />;
-            case 'cancelled': return <XCircle className="h-4 w-4" />;
-            default: return <AlertCircle className="h-4 w-4" />;
         }
     };
 

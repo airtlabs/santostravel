@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Star } from 'lucide-react';
 import { usePackages } from '@/hooks/usePackages';
 
 const DestinationSection = () => {
