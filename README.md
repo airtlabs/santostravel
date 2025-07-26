@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Santos Travel - Travel Booking EngineA modern travel booking website built with Next.js, TypeScript, and Tailwind CSS. Inspired by the structure and functionality of Veena World, Santos Travel offers a comprehensive platform for booking travel packages across India and worldwide destinations.## Features- **Modern Design**: Clean, responsive design with a focus on user experience- **Tour Packages**: Browse and book packages for India, Europe, Asia, and worldwide destinations- **Search Functionality**: Advanced search with filters for destinations, dates, and travelers- **Customer Reviews**: Testimonials and reviews from satisfied travelers- **Travel Planner**: Interactive tool to plan your perfect trip- **Blog & Podcasts**: Travel insights, tips, and stories- **Responsive**: Mobile-first design that works on all devices## Tech Stack- **Framework**: Next.js 15 with App Router- **Language**: TypeScript- **Styling**: Tailwind CSS- **Icons**: Lucide React- **UI Components**: Headless UI- **Date Handling**: date-fns## Getting Started### Prerequisites- Node.js 18+ - npm or yarn### Installation1. Clone the repository:```bashgit clone <your-repo-url>cd santosking```
 
-## Getting Started
-
-First, run the development server:
-
+2. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Start the development server:
+```bash
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Available Scripts
 
-## Learn More
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+├── app/                 # App Router pages
+│   ├── layout.tsx      # Root layout
+│   ├── page.tsx        # Homepage
+│   └── globals.css     # Global styles
+└── components/         # React components
+    ├── Header.tsx      # Navigation header
+    ├── Footer.tsx      # Site footer
+    ├── HeroSection.tsx # Homepage hero
+    ├── DestinationSection.tsx
+    ├── TourPackages.tsx
+    ├── WhyChooseUs.tsx
+    ├── TestimonialsSection.tsx
+    └── BlogSection.tsx
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Key Features
 
-## Deploy on Vercel
+### Navigation
+- India tours
+- World tours  
+- Speciality tours
+- Customized holidays
+- Corporate travel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Tour Packages
+- Detailed package listings with pricing
+- Multiple departure dates
+- Customer ratings and reviews
+- Easy booking process
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Why Choose Santos Travel
+- All-inclusive packages
+- Experienced tour managers
+- 24/7 customer support
+- Best value itineraries
+- Trusted by thousands of travelers
+
+## Customization
+
+The website is built with reusable components and can be easily customized:
+
+1. **Colors**: Update the color scheme in `tailwind.config.js`
+2. **Content**: Modify data in components for different destinations and packages
+3. **Branding**: Replace "Santos Travel" with your brand name throughout the codebase
+4. **Features**: Add new sections by creating components and importing them in `page.tsx`
+
+## Deployment
+
+The app can be deployed to any platform that supports Next.js:
+
+- **Vercel** (recommended): Push to GitHub and connect to Vercel
+- **Netlify**: Build command: `npm run build`, Publish directory: `.next`
+- **Self-hosted**: Run `npm run build` and `npm run start`
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Commit changes: `git commit -am 'Add feature'`
+4. Push to branch: `git push origin feature-name`
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Support
+
+For support and questions, contact us at:
+- Email: travel@santos.travel
+- Phone: 1800 22 7979
+
+---
+
+Built with ❤️ using Next.js and Tailwind CSS
