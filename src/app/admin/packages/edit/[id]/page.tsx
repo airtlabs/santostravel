@@ -281,10 +281,10 @@ const EditPackagePage = () => {
                             <div>
                                 <span className="text-sm text-gray-600">Status:</span>
                                 <span className={`ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${packageData.status === 'active'
-                                        ? 'bg-green-100 text-green-800'
-                                        : packageData.status === 'draft'
-                                            ? 'bg-yellow-100 text-yellow-800'
-                                            : 'bg-red-100 text-red-800'
+                                    ? 'bg-green-100 text-green-800'
+                                    : packageData.status === 'draft'
+                                        ? 'bg-yellow-100 text-yellow-800'
+                                        : 'bg-red-100 text-red-800'
                                     }`}>
                                     {packageData.status}
                                 </span>
@@ -326,8 +326,8 @@ const EditPackagePage = () => {
                                             key={tab.id}
                                             onClick={() => setActiveTab(tab.id)}
                                             className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${activeTab === tab.id
-                                                    ? 'bg-yellow-100 text-yellow-700 border border-yellow-200'
-                                                    : 'text-gray-600 hover:bg-gray-100'
+                                                ? 'bg-yellow-100 text-yellow-700 border border-yellow-200'
+                                                : 'text-gray-600 hover:bg-gray-100'
                                                 }`}
                                         >
                                             <Icon className="h-4 w-4" />

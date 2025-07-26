@@ -38,7 +38,7 @@ const SignInForm = () => {
             if (isSignUp) {
                 // Sign up logic using AuthContext
                 const success = await signUp(formData.name, formData.email, formData.password);
-                
+
                 if (success) {
                     // Redirect to home page after successful signup
                     router.push('/');
@@ -48,7 +48,7 @@ const SignInForm = () => {
             } else {
                 // Sign in logic using AuthContext
                 const success = await signIn(formData.email, formData.password);
-                
+
                 if (success) {
                     // Check if user is admin and redirect accordingly
                     const userData = JSON.parse(localStorage.getItem('user') || '{}');
@@ -94,8 +94,8 @@ const SignInForm = () => {
                         {isSignUp ? 'Create Account' : 'Welcome Back'}
                     </h1>
                     <p className="text-gray-600 mt-2">
-                        {isSignUp 
-                            ? 'Sign up to start your travel journey' 
+                        {isSignUp
+                            ? 'Sign up to start your travel journey'
                             : 'Sign in to access your account'
                         }
                     </p>
@@ -187,8 +187,8 @@ const SignInForm = () => {
                             disabled={loading}
                             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
                         >
-                            {loading 
-                                ? (isSignUp ? 'Creating Account...' : 'Signing In...') 
+                            {loading
+                                ? (isSignUp ? 'Creating Account...' : 'Signing In...')
                                 : (isSignUp ? 'Create Account' : 'Sign In')
                             }
                         </button>

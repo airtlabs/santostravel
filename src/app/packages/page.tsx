@@ -138,8 +138,8 @@ const PackagesPage = () => {
                                     </div>
                                     {/* Status Badge */}
                                     <div className={`absolute top-4 left-4 text-white text-xs px-2 py-1 rounded-full ${pkg.status === 'published' ? 'bg-green-500' :
-                                            pkg.status === 'draft' ? 'bg-yellow-500' :
-                                                'bg-gray-500'
+                                        pkg.status === 'draft' ? 'bg-yellow-500' :
+                                            'bg-gray-500'
                                         }`}>
                                         {pkg.status === 'published' ? 'AVAILABLE' :
                                             pkg.status === 'draft' ? 'DRAFT' :

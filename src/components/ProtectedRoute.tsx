@@ -10,10 +10,10 @@ interface ProtectedRouteProps {
     redirectTo?: string;
 }
 
-const ProtectedRoute = ({ 
-    children, 
-    requireAdmin = false, 
-    redirectTo = '/signin' 
+const ProtectedRoute = ({
+    children,
+    requireAdmin = false,
+    redirectTo = '/signin'
 }: ProtectedRouteProps) => {
     const { loading, isAuthenticated, isAdmin } = useAuth();
     const router = useRouter();

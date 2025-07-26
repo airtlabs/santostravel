@@ -447,116 +447,116 @@ const PackageDetailPage = () => {
                                                 </span>
                                             </div>
                                         </div>
-                                        
+
                                         <form onSubmit={handleBookingSubmit} className="space-y-4">
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                Check In
-                                            </label>
-                                            <input
-                                                type="date"
-                                                value={bookingForm.checkIn}
-                                                onChange={(e) => setBookingForm({ ...bookingForm, checkIn: e.target.value })}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500"
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                Check Out
-                                            </label>
-                                            <input
-                                                type="date"
-                                                value={bookingForm.checkOut}
-                                                onChange={(e) => setBookingForm({ ...bookingForm, checkOut: e.target.value })}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500"
-                                                required
-                                            />
-                                        </div>
-                                    </div>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                        Check In
+                                                    </label>
+                                                    <input
+                                                        type="date"
+                                                        value={bookingForm.checkIn}
+                                                        onChange={(e) => setBookingForm({ ...bookingForm, checkIn: e.target.value })}
+                                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500"
+                                                        required
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                        Check Out
+                                                    </label>
+                                                    <input
+                                                        type="date"
+                                                        value={bookingForm.checkOut}
+                                                        onChange={(e) => setBookingForm({ ...bookingForm, checkOut: e.target.value })}
+                                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
 
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                Adults
-                                            </label>
-                                            <select
-                                                value={bookingForm.adults}
-                                                onChange={(e) => setBookingForm({ ...bookingForm, adults: parseInt(e.target.value) })}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500"
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                        Adults
+                                                    </label>
+                                                    <select
+                                                        value={bookingForm.adults}
+                                                        onChange={(e) => setBookingForm({ ...bookingForm, adults: parseInt(e.target.value) })}
+                                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500"
+                                                    >
+                                                        {[1, 2, 3, 4, 5, 6].map(num => (
+                                                            <option key={num} value={num}>{num}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                        Children
+                                                    </label>
+                                                    <select
+                                                        value={bookingForm.children}
+                                                        onChange={(e) => setBookingForm({ ...bookingForm, children: parseInt(e.target.value) })}
+                                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500"
+                                                    >
+                                                        {[0, 1, 2, 3, 4].map(num => (
+                                                            <option key={num} value={num}>{num}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                    Full Name
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    value={bookingForm.name}
+                                                    onChange={(e) => setBookingForm({ ...bookingForm, name: e.target.value })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500"
+                                                    required
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                    Email
+                                                </label>
+                                                <input
+                                                    type="email"
+                                                    value={bookingForm.email}
+                                                    onChange={(e) => setBookingForm({ ...bookingForm, email: e.target.value })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500"
+                                                    required
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                    Phone
+                                                </label>
+                                                <input
+                                                    type="tel"
+                                                    value={bookingForm.phone}
+                                                    onChange={(e) => setBookingForm({ ...bookingForm, phone: e.target.value })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500"
+                                                    required
+                                                />
+                                            </div>
+
+                                            <button
+                                                type="submit"
+                                                disabled={bookingLoading}
+                                                className={`w-full font-medium py-3 px-4 rounded-md transition-colors ${bookingLoading
+                                                    ? 'bg-gray-400 cursor-not-allowed'
+                                                    : 'bg-yellow-500 hover:bg-yellow-600'
+                                                    } text-white`}
                                             >
-                                                {[1, 2, 3, 4, 5, 6].map(num => (
-                                                    <option key={num} value={num}>{num}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                Children
-                                            </label>
-                                            <select
-                                                value={bookingForm.children}
-                                                onChange={(e) => setBookingForm({ ...bookingForm, children: parseInt(e.target.value) })}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500"
-                                            >
-                                                {[0, 1, 2, 3, 4].map(num => (
-                                                    <option key={num} value={num}>{num}</option>
-                                                ))}
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Full Name
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={bookingForm.name}
-                                            onChange={(e) => setBookingForm({ ...bookingForm, name: e.target.value })}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500"
-                                            required
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Email
-                                        </label>
-                                        <input
-                                            type="email"
-                                            value={bookingForm.email}
-                                            onChange={(e) => setBookingForm({ ...bookingForm, email: e.target.value })}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500"
-                                            required
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Phone
-                                        </label>
-                                        <input
-                                            type="tel"
-                                            value={bookingForm.phone}
-                                            onChange={(e) => setBookingForm({ ...bookingForm, phone: e.target.value })}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500"
-                                            required
-                                        />
-                                    </div>
-
-                                    <button
-                                        type="submit"
-                                        disabled={bookingLoading}
-                                        className={`w-full font-medium py-3 px-4 rounded-md transition-colors ${bookingLoading
-                                                ? 'bg-gray-400 cursor-not-allowed'
-                                                : 'bg-yellow-500 hover:bg-yellow-600'
-                                            } text-white`}
-                                    >
-                                        {bookingLoading ? 'Processing...' : 'Book Now'}
-                                    </button>
-                                                                        </form>
+                                                {bookingLoading ? 'Processing...' : 'Book Now'}
+                                            </button>
+                                        </form>
                                     </div>
                                 ) : (
                                     /* Not Authenticated - Show Sign Up/Sign In Options */

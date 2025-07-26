@@ -414,10 +414,10 @@ const AdminDashboard = () => {
                                                     <button
                                                         onClick={() => togglePackageStatus(pkg.id, pkg.status)}
                                                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${pkg.status === 'published'
-                                                                ? 'bg-green-100 text-green-800'
-                                                                : pkg.status === 'draft'
-                                                                    ? 'bg-yellow-100 text-yellow-800'
-                                                                    : 'bg-red-100 text-red-800'
+                                                            ? 'bg-green-100 text-green-800'
+                                                            : pkg.status === 'draft'
+                                                                ? 'bg-yellow-100 text-yellow-800'
+                                                                : 'bg-red-100 text-red-800'
                                                             }`}
                                                     >
                                                         {pkg.status}

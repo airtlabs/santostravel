@@ -293,8 +293,8 @@ const Header = () => {
                   <User className="h-5 w-5 mr-1" />
                   <span>Sign In</span>
                 </Link>
-                <Link 
-                  href="/signin?mode=signup" 
+                <Link
+                  href="/signin?mode=signup"
                   className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 px-4 py-2 rounded-lg font-medium transition-colors"
                 >
                   Sign Up
