@@ -50,7 +50,7 @@ const AdminBookingsPage = () => {
             const response = await fetch(`/api/bookings?${params.toString()}`);
             if (response.ok) {
                 const data = await response.json();
-                setBookings(data);
+                setBookings(data.bookings || []);
             }
         } catch (error) {
             console.error('Error fetching bookings:', error);
