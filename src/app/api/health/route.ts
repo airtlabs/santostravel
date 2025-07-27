@@ -4,7 +4,7 @@ import { createAdminClient } from '@/lib/supabase'
 export async function GET() {
     try {
         const supabase = createAdminClient()
-        
+
         // Test database connection by counting packages
         const { data, error, count } = await supabase
             .from('packages')
