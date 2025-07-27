@@ -80,7 +80,7 @@ const AdminDashboard = () => {
             const statsData = await statsResponse.json();
 
             setPackages(packagesData.packages || []);
-            setStats(statsData);
+            setStats(statsData.stats);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to fetch data');
             console.error('Error fetching data:', err);
