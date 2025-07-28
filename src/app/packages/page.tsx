@@ -2,26 +2,64 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { MapPin, Calendar, Users, Star, Search, Filter } from 'lucide-react';
+import { MapPin, Calendar, Users, Star, Search, Filter, X } from 'lucide-react';
 import { useState } from 'react';
 import { usePackages } from '@/hooks/usePackages';
 
 const PackagesPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedFilter, setSelectedFilter] = useState('all');
+    const [selectedCategory, setSelectedCategory] = useState('all');
+    const [selectedDuration, setSelectedDuration] = useState('all');
+    const [priceRange, setPriceRange] = useState({ min: '', max: '' });
+    const [selectedDestination, setSelectedDestination] = useState('all');
     const [statusFilter, setStatusFilter] = useState('published');
+    const [sortBy, setSortBy] = useState('price-low');
 
     const { packages: dbPackages, loading, error } = usePackages();
 
-    // Filter packages based on search, category, and status
+    // Filter packages based on all criteria
     const filteredPackages = dbPackages.filter(pkg => {
         const matchesSearch = pkg.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
             pkg.destination.toLowerCase().includes(searchQuery.toLowerCase()) ||
             pkg.description.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchesCategory = selectedFilter === 'all' || pkg.category === selectedFilter;
+        
+        const matchesCategory = selectedCategory === 'all' || pkg.category === selectedCategory;
         const matchesStatus = statusFilter === 'all' || pkg.status === statusFilter;
-        return matchesSearch && matchesCategory && matchesStatus;
+        
+        const matchesDuration = selectedDuration === 'all' || 
+            (selectedDuration === 'short' && parseInt(pkg.duration) <= 3) ||
+            (selectedDuration === 'medium' && parseInt(pkg.duration) >= 4 && parseInt(pkg.duration) <= 7) ||
+            (selectedDuration === 'long' && parseInt(pkg.duration) >= 8);
+        
+        const matchesPrice = (!priceRange.min || pkg.price >= parseInt(priceRange.min)) &&
+            (!priceRange.max || pkg.price <= parseInt(priceRange.max));
+        
+        const matchesDestination = selectedDestination === 'all' || 
+            pkg.destination.toLowerCase().includes(selectedDestination.toLowerCase());
+        
+        return matchesSearch && matchesCategory && matchesStatus && matchesDuration && matchesPrice && matchesDestination;
+    }).sort((a, b) => {
+        switch (sortBy) {
+            case 'price-low': return a.price - b.price;
+            case 'price-high': return b.price - a.price;
+            case 'duration-short': return parseInt(a.duration) - parseInt(b.duration);
+            case 'duration-long': return parseInt(b.duration) - parseInt(a.duration);
+            case 'name': return a.title.localeCompare(b.title);
+            default: return 0;
+        }
     });
+
+    // Get unique destinations for filter
+    const destinations = [...new Set(dbPackages.map(pkg => pkg.destination.split(',')[0].trim()))];
+
+    const clearFilters = () => {
+        setSearchQuery('');
+        setSelectedCategory('all');
+        setSelectedDuration('all');
+        setPriceRange({ min: '', max: '' });
+        setSelectedDestination('all');
+        setSortBy('price-low');
+    };
 
     // Handle loading and error states
     if (loading) {
@@ -61,67 +99,153 @@ const PackagesPage = () => {
                 </div>
             </div>
 
-            {/* Filters and Search */}
-            <div className="bg-white border-b">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                    <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-                        {/* Search */}
-                        <div className="relative flex-1 max-w-md">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                            <input
-                                type="text"
-                                placeholder="Search packages, destinations, descriptions..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                            />
-                        </div>
+            {/* Main Content - Sidebar Layout */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div className="flex flex-col lg:flex-row gap-8">
+                    {/* Left Sidebar - Filters */}
+                    <div className="lg:w-1/4">
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-8">
+                            <div className="flex items-center justify-between mb-6">
+                                <h2 className="text-lg font-semibold text-gray-900 flex items-center">
+                                    <Filter className="h-5 w-5 mr-2 text-gray-400" />
+                                    Filters
+                                </h2>
+                                <button 
+                                    onClick={clearFilters}
+                                    className="text-sm text-blue-600 hover:text-blue-700 flex items-center"
+                                >
+                                    <X className="h-4 w-4 mr-1" />
+                                    Clear All
+                                </button>
+                            </div>
 
-                        {/* Filters */}
-                        <div className="flex items-center gap-4 flex-wrap">
-                            <Filter className="h-4 w-4 text-gray-400" />
+                            {/* Search */}
+                            <div className="mb-6">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
+                                <div className="relative">
+                                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                    <input
+                                        type="text"
+                                        placeholder="Search packages..."
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                    />
+                                </div>
+                            </div>
 
                             {/* Category Filter */}
-                            <select
-                                value={selectedFilter}
-                                onChange={(e) => setSelectedFilter(e.target.value)}
-                                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                            >
-                                <option value="all">All Categories</option>
-                                <option value="india">India Tours</option>
-                                <option value="international">International Tours</option>
-                                <option value="adventure">Adventure Tours</option>
-                                <option value="luxury">Luxury Tours</option>
-                                <option value="budget">Budget Tours</option>
-                            </select>
+                            <div className="mb-6">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                                <select
+                                    value={selectedCategory}
+                                    onChange={(e) => setSelectedCategory(e.target.value)}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                >
+                                    <option value="all">All Categories</option>
+                                    <option value="india">India Tours</option>
+                                    <option value="international">International Tours</option>
+                                    <option value="adventure">Adventure Tours</option>
+                                    <option value="luxury">Luxury Tours</option>
+                                    <option value="budget">Budget Tours</option>
+                                </select>
+                            </div>
+
+                            {/* Destination Filter */}
+                            <div className="mb-6">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Destination</label>
+                                <select
+                                    value={selectedDestination}
+                                    onChange={(e) => setSelectedDestination(e.target.value)}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                >
+                                    <option value="all">All Destinations</option>
+                                    {destinations.map(dest => (
+                                        <option key={dest} value={dest}>{dest}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {/* Duration Filter */}
+                            <div className="mb-6">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Duration</label>
+                                <select
+                                    value={selectedDuration}
+                                    onChange={(e) => setSelectedDuration(e.target.value)}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                >
+                                    <option value="all">Any Duration</option>
+                                    <option value="short">1-3 Days</option>
+                                    <option value="medium">4-7 Days</option>
+                                    <option value="long">8+ Days</option>
+                                </select>
+                            </div>
+
+                            {/* Price Range */}
+                            <div className="mb-6">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Price Range (₹)</label>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <input
+                                        type="number"
+                                        placeholder="Min"
+                                        value={priceRange.min}
+                                        onChange={(e) => setPriceRange({...priceRange, min: e.target.value})}
+                                        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                    />
+                                    <input
+                                        type="number"
+                                        placeholder="Max"
+                                        value={priceRange.max}
+                                        onChange={(e) => setPriceRange({...priceRange, max: e.target.value})}
+                                        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                    />
+                                </div>
+                            </div>
 
                             {/* Status Filter */}
-                            <select
-                                value={statusFilter}
-                                onChange={(e) => setStatusFilter(e.target.value)}
-                                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                            >
-                                <option value="published">Published Only</option>
-                                <option value="all">All Packages</option>
-                                <option value="draft">Draft Only</option>
-                            </select>
+                            <div className="mb-6">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                <select
+                                    value={statusFilter}
+                                    onChange={(e) => setStatusFilter(e.target.value)}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                >
+                                    <option value="published">Published Only</option>
+                                    <option value="all">All Packages</option>
+                                    <option value="draft">Draft Only</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Results Summary */}
-                    <div className="mt-4 text-sm text-gray-600">
-                        Showing {filteredPackages.length} of {dbPackages.length} packages
-                        {searchQuery && <span> for &quot;{searchQuery}&quot;</span>}
-                        {selectedFilter !== 'all' && <span> in {selectedFilter} category</span>}
-                        {statusFilter !== 'published' && <span> with {statusFilter} status</span>}
-                    </div>
-                </div>
-            </div>
+                    {/* Right Content - Package Listings */}
+                    <div className="lg:w-3/4">
+                        {/* Sort and Results Header */}
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div className="text-sm text-gray-600">
+                                    Showing {filteredPackages.length} of {dbPackages.length} packages
+                                    {searchQuery && <span> for &quot;{searchQuery}&quot;</span>}
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <label className="text-sm font-medium text-gray-700">Sort by:</label>
+                                    <select
+                                        value={sortBy}
+                                        onChange={(e) => setSortBy(e.target.value)}
+                                        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                    >
+                                        <option value="price-low">Price: Low to High</option>
+                                        <option value="price-high">Price: High to Low</option>
+                                        <option value="duration-short">Duration: Short to Long</option>
+                                        <option value="duration-long">Duration: Long to Short</option>
+                                        <option value="name">Name: A to Z</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
 
-            {/* Package Grid */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {filteredPackages.map((pkg) => (
+                        {/* Package Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">{filteredPackages.map((pkg) => (
                         <Link key={pkg.id} href={`/package/${pkg.id}`} className="group">
                             <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200">
                                 {/* Package Image */}
@@ -223,8 +347,16 @@ const PackagesPage = () => {
                 {filteredPackages.length === 0 && (
                     <div className="text-center py-12">
                         <p className="text-gray-500 text-lg">No packages found matching your criteria.</p>
+                        <button 
+                            onClick={clearFilters}
+                            className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg"
+                        >
+                            Clear Filters
+                        </button>
                     </div>
                 )}
+                    </div>
+                </div>
             </div>
         </div>
     );

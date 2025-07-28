@@ -5,7 +5,20 @@
 npm install
 ```
 
-3. Start the development server:
+3. Set up environment variables:
+```bash
+# Copy the example environment file
+cp .env.example .env.local
+
+# Edit .env.local and add your Supabase credentials
+# You can find these in your Supabase project dashboard under Settings → API
+```
+
+4. Set up Supabase database:
+   - Follow the instructions in `SUPABASE_SETUP.md`
+   - Run the SQL migrations in your Supabase project
+
+5. Start the development server:
 ```bash
 npm run dev
 ```

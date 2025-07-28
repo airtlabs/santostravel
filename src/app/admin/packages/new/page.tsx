@@ -21,6 +21,9 @@ const NewPackagePage = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [activeTab, setActiveTab] = useState('basic');
+    const [uploadedImages, setUploadedImages] = useState<Array<{file: File, preview: string, name: string}>>([]);
+    const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const [dragActive, setDragActive] = useState(false);
 
     const [packageData, setPackageData] = useState({
         // Basic Information
@@ -33,7 +36,7 @@ const NewPackagePage = () => {
         status: 'draft',
 
         // Images
-        images: [''],
+        images: [] as string[],
 
         // Details
         highlights: [''],
@@ -136,6 +139,62 @@ const NewPackagePage = () => {
         }));
     };
 
+    // Image upload functions
+    const handleImageUpload = (files: FileList) => {
+        const newImages = Array.from(files).map(file => {
+            const reader = new FileReader();
+            return new Promise<{file: File, preview: string, name: string}>((resolve) => {
+                reader.onload = (e) => resolve({
+                    file,
+                    preview: e.target?.result as string,
+                    name: file.name
+                });
+                reader.readAsDataURL(file);
+            });
+        });
+
+        Promise.all(newImages).then(images => {
+            setUploadedImages(prev => [...prev, ...images]);
+            setImageFiles(prev => [...prev, ...Array.from(files)]);
+            
+            // Convert to base64 strings for package data
+            const imageUrls = images.map(img => img.preview);
+            setPackageData(prev => ({
+                ...prev,
+                images: [...prev.images, ...imageUrls]
+            }));
+        });
+    };
+
+    const removeImage = (index: number) => {
+        setUploadedImages(prev => prev.filter((_, i) => i !== index));
+        setImageFiles(prev => prev.filter((_, i) => i !== index));
+        setPackageData(prev => ({
+            ...prev,
+            images: prev.images.filter((_, i) => i !== index)
+        }));
+    };
+
+    const handleDrag = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.type === "dragenter" || e.type === "dragover") {
+            setDragActive(true);
+        } else if (e.type === "dragleave") {
+            setDragActive(false);
+        }
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragActive(false);
+        
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            handleImageUpload(e.dataTransfer.files);
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent, status: string = 'draft') => {
         e.preventDefault();
         setLoading(true);
@@ -150,7 +209,7 @@ const NewPackagePage = () => {
                 destination: packageData.destination,
                 category: packageData.category,
                 status: status as 'draft' | 'published' | 'archived',
-                images: packageData.images.filter(img => img.trim() !== ''),
+                images: packageData.images || [],
                 itinerary: packageData.itinerary.map(day => ({
                     day: day.day,
                     title: day.title,
@@ -350,42 +409,95 @@ const NewPackagePage = () => {
                                 <div className="bg-white rounded-lg shadow-sm border p-6">
                                     <h2 className="text-lg font-semibold mb-6">Package Images</h2>
 
-                                    <div className="space-y-4">
-                                        {packageData.images.map((image, index) => (
-                                            <div key={index} className="flex items-center gap-4">
-                                                <div className="flex-1">
-                                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                        Image URL {index + 1} {index === 0 && '*'}
-                                                    </label>
-                                                    <input
-                                                        type="url"
-                                                        value={image}
-                                                        onChange={(e) => handleArrayChange('images', index, e.target.value)}
-                                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500"
-                                                        placeholder="https://example.com/image.jpg"
-                                                        required={index === 0}
-                                                    />
-                                                </div>
-                                                {index > 0 && (
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => removeArrayItem('images', index)}
-                                                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
-                                                    >
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </button>
-                                                )}
-                                            </div>
-                                        ))}
-
-                                        <button
-                                            type="button"
-                                            onClick={() => addArrayItem('images')}
-                                            className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                                    <div className="space-y-6">
+                                        {/* Upload Area */}
+                                        <div
+                                            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                                                dragActive 
+                                                    ? 'border-yellow-500 bg-yellow-50' 
+                                                    : 'border-gray-300 hover:border-gray-400'
+                                            }`}
+                                            onDragEnter={handleDrag}
+                                            onDragLeave={handleDrag}
+                                            onDragOver={handleDrag}
+                                            onDrop={handleDrop}
                                         >
-                                            <Plus className="h-4 w-4" />
-                                            Add Another Image
-                                        </button>
+                                            <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                                            <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                                Upload Package Images
+                                            </h3>
+                                            <p className="text-sm text-gray-600 mb-4">
+                                                Drag and drop your images here, or click to select files
+                                            </p>
+                                            <input
+                                                type="file"
+                                                id="image-upload"
+                                                multiple
+                                                accept="image/*"
+                                                onChange={(e) => e.target.files && handleImageUpload(e.target.files)}
+                                                className="hidden"
+                                            />
+                                            <label
+                                                htmlFor="image-upload"
+                                                className="inline-flex items-center px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-medium rounded-lg cursor-pointer transition-colors"
+                                            >
+                                                <Upload className="h-4 w-4 mr-2" />
+                                                Choose Images
+                                            </label>
+                                            <p className="text-xs text-gray-500 mt-2">
+                                                Supports: JPG, PNG, GIF (Max 5MB each)
+                                            </p>
+                                        </div>
+
+                                        {/* Uploaded Images Preview */}
+                                        {uploadedImages.length > 0 && (
+                                            <div>
+                                                <h3 className="text-md font-medium text-gray-900 mb-4">
+                                                    Uploaded Images ({uploadedImages.length})
+                                                </h3>
+                                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                                    {uploadedImages.map((image, index) => (
+                                                        <div key={index} className="relative group">
+                                                            <div className="aspect-square rounded-lg overflow-hidden bg-gray-100">
+                                                                <img
+                                                                    src={image.preview}
+                                                                    alt={`Upload ${index + 1}`}
+                                                                    className="w-full h-full object-cover"
+                                                                />
+                                                            </div>
+                                                            <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => removeImage(index)}
+                                                                    className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors"
+                                                                >
+                                                                    <Trash2 className="h-4 w-4" />
+                                                                </button>
+                                                            </div>
+                                                            <p className="text-xs text-gray-600 mt-2 truncate">
+                                                                {image.name}
+                                                            </p>
+                                                            {index === 0 && (
+                                                                <span className="absolute top-2 left-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded">
+                                                                    Main
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Instructions */}
+                                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                            <h4 className="text-sm font-medium text-blue-900 mb-2">📸 Image Guidelines:</h4>
+                                            <ul className="text-sm text-blue-800 space-y-1">
+                                                <li>• Upload high-quality images (minimum 800x600)</li>
+                                                <li>• First image will be used as the main package image</li>
+                                                <li>• Include diverse shots: destinations, activities, accommodations</li>
+                                                <li>• Avoid images with watermarks or low resolution</li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             )}

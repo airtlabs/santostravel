@@ -1,0 +1,69 @@
+{
+  "name": "Santos Travel - Travel Booking Engine",
+  "short_name": "Santos Travel",
+  "description": "Book amazing travel packages across India and worldwide destinations with Santos Travel",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f59e0b",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["travel", "lifestyle", "navigation"],
+  "icons": [
+    {
+      "src": "/santos-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/santos-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/santos-logo.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Santos Travel - Home Screen"
+    },
+    {
+      "src": "/santos-logo.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Santos Travel - Mobile View"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Browse Packages",
+      "short_name": "Packages",
+      "description": "Browse all available travel packages",
+      "url": "/packages",
+      "icons": [
+        {
+          "src": "/santos-logo.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Book Now",
+      "short_name": "Book",
+      "description": "Start booking your travel package",
+      "url": "/packages",
+      "icons": [
+        {
+          "src": "/santos-logo.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
