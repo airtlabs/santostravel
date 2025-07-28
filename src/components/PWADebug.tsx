@@ -55,7 +55,19 @@ const PWADebug = () => {
   const showDebug = process.env.NODE_ENV === 'development' || 
                    (typeof window !== 'undefined' && window.location.search.includes('debug=true'));
 
-  if (!showDebug) {
+  const clearDismissed = () => {
+    localStorage.removeItem('pwa-dismissed');
+    window.location.reload();
+  };
+
+  const forceShowInstall = () => {
+    localStorage.removeItem('pwa-dismissed');
+    // Dispatch a custom event to trigger install prompt
+    window.dispatchEvent(new Event('beforeinstallprompt'));
+    window.location.reload();
+  };
+
+  if (!debug || Object.keys(debug).length === 0) {
     return null;
   }
 
@@ -73,12 +85,27 @@ const PWADebug = () => {
       >
         Clear PWA Dismissed
       </button>
-      <button 
-        onClick={() => window.location.reload()}
-        className="mt-2 bg-green-500 text-white px-2 py-1 rounded text-xs"
-      >
-        Reload Page
-      </button>
+              <div className="flex gap-2 mt-4">
+          <button
+            onClick={clearDismissed}
+            className="px-3 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600"
+          >
+            Clear Dismissal
+          </button>
+          <button
+            onClick={forceShowInstall}
+            className="px-3 py-2 bg-green-500 text-white text-sm rounded hover:bg-green-600"
+          >
+            Force Install Prompt
+          </button>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-3 py-2 bg-gray-500 text-white text-sm rounded hover:bg-gray-600"
+          >
+            Reload Page
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

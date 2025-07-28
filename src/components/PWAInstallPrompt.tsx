@@ -47,30 +47,30 @@ const PWAInstallPrompt = () => {
       
       // Show install prompt after a shorter delay for better UX
       setTimeout(() => {
-        if (daysSinceDismissed > 1) { // Show again after 1 day instead of 7
+        if (daysSinceDismissed > 0.1) { // Show again after 2.4 hours for testing
           setShowInstallPrompt(true);
         }
-      }, 2000); // Show after 2 seconds instead of 3
+      }, 1000); // Show after 1 second for testing
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
     // For iOS and Android, show manual install instructions more aggressively
-    if ((iOS || isAndroid) && !standalone && daysSinceDismissed > 1) {
+    if ((iOS || isAndroid) && !standalone && daysSinceDismissed > 0.1) {
       setTimeout(() => {
         setShowInstallPrompt(true);
         // Always allow installation guidance, even without beforeinstallprompt
         setCanInstall(true);
-      }, 2000);
+      }, 1000);
     }
 
-    // If no beforeinstallprompt after 5 seconds, still show install option
+    // If no beforeinstallprompt after 3 seconds, still show install option
     setTimeout(() => {
-      if (!deferredPrompt && !standalone && daysSinceDismissed > 1) {
+      if (!deferredPrompt && !standalone && daysSinceDismissed > 0.1) {
         setShowInstallPrompt(true);
         setCanInstall(true); // Allow manual installation guidance
       }
-    }, 5000);
+    }, 3000);
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
