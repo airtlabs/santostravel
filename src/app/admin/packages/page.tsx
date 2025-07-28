@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePackages } from '@/hooks/usePackages';
 import { Package } from '@/types/database';
@@ -10,7 +10,6 @@ import {
     Edit,
     Eye,
     Trash2,
-    Filter,
     ChevronDown
 } from 'lucide-react';
 
@@ -100,7 +99,7 @@ const AdminPackagesPage = () => {
                         <div className="relative">
                             <select
                                 value={statusFilter}
-                                onChange={(e) => setStatusFilter(e.target.value as any)}
+                                onChange={(e) => setStatusFilter(e.target.value as 'all' | 'draft' | 'published' | 'archived')}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 appearance-none"
                             >
                                 <option value="all">All Status</option>
