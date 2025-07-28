@@ -21,7 +21,7 @@ const NewPackagePage = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [activeTab, setActiveTab] = useState('basic');
-    const [uploadedImages, setUploadedImages] = useState<Array<{file: File, preview: string, name: string}>>([]);
+    const [uploadedImages, setUploadedImages] = useState<Array<{ file: File, preview: string, name: string }>>([]);
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [dragActive, setDragActive] = useState(false);
 
@@ -143,7 +143,7 @@ const NewPackagePage = () => {
     const handleImageUpload = (files: FileList) => {
         const newImages = Array.from(files).map(file => {
             const reader = new FileReader();
-            return new Promise<{file: File, preview: string, name: string}>((resolve) => {
+            return new Promise<{ file: File, preview: string, name: string }>((resolve) => {
                 reader.onload = (e) => resolve({
                     file,
                     preview: e.target?.result as string,
@@ -156,7 +156,7 @@ const NewPackagePage = () => {
         Promise.all(newImages).then(images => {
             setUploadedImages(prev => [...prev, ...images]);
             setImageFiles(prev => [...prev, ...Array.from(files)]);
-            
+
             // Convert to base64 strings for package data
             const imageUrls = images.map(img => img.preview);
             setPackageData(prev => ({
@@ -189,7 +189,7 @@ const NewPackagePage = () => {
         e.preventDefault();
         e.stopPropagation();
         setDragActive(false);
-        
+
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
             handleImageUpload(e.dataTransfer.files);
         }
@@ -412,11 +412,10 @@ const NewPackagePage = () => {
                                     <div className="space-y-6">
                                         {/* Upload Area */}
                                         <div
-                                            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-                                                dragActive 
-                                                    ? 'border-yellow-500 bg-yellow-50' 
+                                            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${dragActive
+                                                    ? 'border-yellow-500 bg-yellow-50'
                                                     : 'border-gray-300 hover:border-gray-400'
-                                            }`}
+                                                }`}
                                             onDragEnter={handleDrag}
                                             onDragLeave={handleDrag}
                                             onDragOver={handleDrag}

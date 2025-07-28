@@ -22,21 +22,21 @@ const PackagesPage = () => {
         const matchesSearch = pkg.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
             pkg.destination.toLowerCase().includes(searchQuery.toLowerCase()) ||
             pkg.description.toLowerCase().includes(searchQuery.toLowerCase());
-        
+
         const matchesCategory = selectedCategory === 'all' || pkg.category === selectedCategory;
         const matchesStatus = statusFilter === 'all' || pkg.status === statusFilter;
-        
-        const matchesDuration = selectedDuration === 'all' || 
+
+        const matchesDuration = selectedDuration === 'all' ||
             (selectedDuration === 'short' && parseInt(pkg.duration) <= 3) ||
             (selectedDuration === 'medium' && parseInt(pkg.duration) >= 4 && parseInt(pkg.duration) <= 7) ||
             (selectedDuration === 'long' && parseInt(pkg.duration) >= 8);
-        
+
         const matchesPrice = (!priceRange.min || pkg.price >= parseInt(priceRange.min)) &&
             (!priceRange.max || pkg.price <= parseInt(priceRange.max));
-        
-        const matchesDestination = selectedDestination === 'all' || 
+
+        const matchesDestination = selectedDestination === 'all' ||
             pkg.destination.toLowerCase().includes(selectedDestination.toLowerCase());
-        
+
         return matchesSearch && matchesCategory && matchesStatus && matchesDuration && matchesPrice && matchesDestination;
     }).sort((a, b) => {
         switch (sortBy) {
@@ -110,7 +110,7 @@ const PackagesPage = () => {
                                     <Filter className="h-5 w-5 mr-2 text-gray-400" />
                                     Filters
                                 </h2>
-                                <button 
+                                <button
                                     onClick={clearFilters}
                                     className="text-sm text-blue-600 hover:text-blue-700 flex items-center"
                                 >
@@ -189,14 +189,14 @@ const PackagesPage = () => {
                                         type="number"
                                         placeholder="Min"
                                         value={priceRange.min}
-                                        onChange={(e) => setPriceRange({...priceRange, min: e.target.value})}
+                                        onChange={(e) => setPriceRange({ ...priceRange, min: e.target.value })}
                                         className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                                     />
                                     <input
                                         type="number"
                                         placeholder="Max"
                                         value={priceRange.max}
-                                        onChange={(e) => setPriceRange({...priceRange, max: e.target.value})}
+                                        onChange={(e) => setPriceRange({ ...priceRange, max: e.target.value })}
                                         className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                                     />
                                 </div>
@@ -246,115 +246,115 @@ const PackagesPage = () => {
 
                         {/* Package Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">{filteredPackages.map((pkg) => (
-                        <Link key={pkg.id} href={`/package/${pkg.id}`} className="group">
-                            <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200">
-                                {/* Package Image */}
-                                <div className="relative h-48 overflow-hidden">
-                                    <Image
-                                        src={pkg.images && pkg.images.length > 0 ? pkg.images[0] : 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=250&fit=crop'}
-                                        alt={pkg.title}
-                                        fill
-                                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                    />
-                                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
-                                        <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                                        <span className="text-sm font-medium">4.5</span>
-                                    </div>
-                                    {/* Status Badge */}
-                                    <div className={`absolute top-4 left-4 text-white text-xs px-2 py-1 rounded-full ${pkg.status === 'published' ? 'bg-green-500' :
-                                        pkg.status === 'draft' ? 'bg-yellow-500' :
-                                            'bg-gray-500'
-                                        }`}>
-                                        {pkg.status === 'published' ? 'AVAILABLE' :
-                                            pkg.status === 'draft' ? 'DRAFT' :
-                                                'ARCHIVED'}
-                                    </div>
-                                    {/* Category Badge */}
-                                    <div className="absolute bottom-4 left-4 bg-blue-500/80 text-white text-xs px-2 py-1 rounded-full">
-                                        {pkg.category.toUpperCase()}
-                                    </div>
-                                </div>
-
-                                {/* Package Content */}
-                                <div className="p-6">
-                                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-yellow-600 transition-colors">
-                                        {pkg.title}
-                                    </h3>
-
-                                    {/* Description */}
-                                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                                        {pkg.description || pkg.duration}
-                                    </p>
-
-                                    <div className="space-y-3 mb-4">
-                                        <div className="flex items-center text-sm text-gray-600">
-                                            <MapPin className="h-4 w-4 mr-2 text-gray-400" />
-                                            <span>{pkg.destination}</span>
+                            <Link key={pkg.id} href={`/package/${pkg.id}`} className="group">
+                                <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200">
+                                    {/* Package Image */}
+                                    <div className="relative h-48 overflow-hidden">
+                                        <Image
+                                            src={pkg.images && pkg.images.length > 0 ? pkg.images[0] : 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=250&fit=crop'}
+                                            alt={pkg.title}
+                                            fill
+                                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                        />
+                                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
+                                            <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                                            <span className="text-sm font-medium">4.5</span>
                                         </div>
-                                        <div className="flex items-center justify-between text-sm text-gray-600">
-                                            <div className="flex items-center">
-                                                <Calendar className="h-4 w-4 mr-2 text-gray-400" />
-                                                <span>{pkg.duration}</span>
+                                        {/* Status Badge */}
+                                        <div className={`absolute top-4 left-4 text-white text-xs px-2 py-1 rounded-full ${pkg.status === 'published' ? 'bg-green-500' :
+                                            pkg.status === 'draft' ? 'bg-yellow-500' :
+                                                'bg-gray-500'
+                                            }`}>
+                                            {pkg.status === 'published' ? 'AVAILABLE' :
+                                                pkg.status === 'draft' ? 'DRAFT' :
+                                                    'ARCHIVED'}
+                                        </div>
+                                        {/* Category Badge */}
+                                        <div className="absolute bottom-4 left-4 bg-blue-500/80 text-white text-xs px-2 py-1 rounded-full">
+                                            {pkg.category.toUpperCase()}
+                                        </div>
+                                    </div>
+
+                                    {/* Package Content */}
+                                    <div className="p-6">
+                                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-yellow-600 transition-colors">
+                                            {pkg.title}
+                                        </h3>
+
+                                        {/* Description */}
+                                        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                                            {pkg.description || pkg.duration}
+                                        </p>
+
+                                        <div className="space-y-3 mb-4">
+                                            <div className="flex items-center text-sm text-gray-600">
+                                                <MapPin className="h-4 w-4 mr-2 text-gray-400" />
+                                                <span>{pkg.destination}</span>
                                             </div>
-                                            <div className="flex items-center">
-                                                <Users className="h-4 w-4 mr-2 text-gray-400" />
-                                                <span>Max {pkg.max_participants}</span>
+                                            <div className="flex items-center justify-between text-sm text-gray-600">
+                                                <div className="flex items-center">
+                                                    <Calendar className="h-4 w-4 mr-2 text-gray-400" />
+                                                    <span>{pkg.duration}</span>
+                                                </div>
+                                                <div className="flex items-center">
+                                                    <Users className="h-4 w-4 mr-2 text-gray-400" />
+                                                    <span>Max {pkg.max_participants}</span>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        {/* Best Time */}
-                                        <div className="flex items-center justify-end text-sm text-gray-600">
-                                            <span className="text-xs text-gray-500">
-                                                Best time: {pkg.best_time || 'Any time'}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    {/* Highlights */}
-                                    <div className="mb-4">
-                                        <div className="flex flex-wrap gap-1">
-                                            {pkg.highlights && pkg.highlights.slice(0, 3).map((highlight, index) => (
-                                                <span key={index} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
-                                                    {highlight}
-                                                </span>
-                                            ))}
-                                            {pkg.highlights && pkg.highlights.length > 3 && (
-                                                <span className="text-xs text-gray-500">+{pkg.highlights.length - 3} more</span>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    {/* Price and CTA */}
-                                    <div className="border-t pt-4 flex items-center justify-between">
-                                        <div>
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-2xl font-bold text-green-600">
-                                                    ₹{pkg.price.toLocaleString()}
+                                            {/* Best Time */}
+                                            <div className="flex items-center justify-end text-sm text-gray-600">
+                                                <span className="text-xs text-gray-500">
+                                                    Best time: {pkg.best_time || 'Any time'}
                                                 </span>
                                             </div>
-                                            <p className="text-xs text-gray-500">per person</p>
                                         </div>
-                                        <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                                            View Details
-                                        </button>
+
+                                        {/* Highlights */}
+                                        <div className="mb-4">
+                                            <div className="flex flex-wrap gap-1">
+                                                {pkg.highlights && pkg.highlights.slice(0, 3).map((highlight, index) => (
+                                                    <span key={index} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                                                        {highlight}
+                                                    </span>
+                                                ))}
+                                                {pkg.highlights && pkg.highlights.length > 3 && (
+                                                    <span className="text-xs text-gray-500">+{pkg.highlights.length - 3} more</span>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* Price and CTA */}
+                                        <div className="border-t pt-4 flex items-center justify-between">
+                                            <div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-2xl font-bold text-green-600">
+                                                        ₹{pkg.price.toLocaleString()}
+                                                    </span>
+                                                </div>
+                                                <p className="text-xs text-gray-500">per person</p>
+                                            </div>
+                                            <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                                View Details
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
+                            </Link>
+                        ))}
+                        </div>
+
+                        {filteredPackages.length === 0 && (
+                            <div className="text-center py-12">
+                                <p className="text-gray-500 text-lg">No packages found matching your criteria.</p>
+                                <button
+                                    onClick={clearFilters}
+                                    className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg"
+                                >
+                                    Clear Filters
+                                </button>
                             </div>
-                        </Link>
-                    ))}
-                </div>
-
-                {filteredPackages.length === 0 && (
-                    <div className="text-center py-12">
-                        <p className="text-gray-500 text-lg">No packages found matching your criteria.</p>
-                        <button 
-                            onClick={clearFilters}
-                            className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg"
-                        >
-                            Clear Filters
-                        </button>
-                    </div>
-                )}
+                        )}
                     </div>
                 </div>
             </div>

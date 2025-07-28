@@ -21,10 +21,10 @@ const AdminPackagesPage = () => {
 
     const filteredPackages = packages.filter((pkg: Package) => {
         const matchesSearch = pkg.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            pkg.destination.toLowerCase().includes(searchTerm.toLowerCase());
+            pkg.destination.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesStatus = statusFilter === 'all' || pkg.status === statusFilter;
         const matchesCategory = categoryFilter === 'all' || pkg.category === categoryFilter;
-        
+
         return matchesSearch && matchesStatus && matchesCategory;
     });
 

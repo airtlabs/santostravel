@@ -1,95 +1,99 @@
 {
-  "name": "Santos Travel - Travel Booking Engine",
-  "short_name": "Santos Travel",
-  "description": "Book amazing travel packages across India and worldwide destinations with Santos Travel",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#f59e0b",
-  "orientation": "any",
-  "scope": "/",
-  "lang": "en",
-  "categories": ["travel", "lifestyle", "navigation"],
-  "prefer_related_applications": false,
-  "edge_side_panel": {
-    "preferred_width": 400
-  },
-  "icons": [
-    {
-      "src": "/santos-logo.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any"
+    "name": "Santos Travel - Travel Booking Engine",
+    "short_name": "Santos Travel",
+    "description": "Book amazing travel packages across India and worldwide destinations with Santos Travel",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#f59e0b",
+    "orientation": "any",
+    "scope": "/",
+    "lang": "en",
+    "categories": [
+        "travel",
+        "lifestyle",
+        "navigation"
+    ],
+    "prefer_related_applications": false,
+    "edge_side_panel": {
+        "preferred_width": 400
     },
-    {
-      "src": "/santos-logo.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/santos-logo.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/santos-logo.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/santos-logo.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/santos-logo.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/santos-logo.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/santos-logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Browse Packages",
-      "short_name": "Packages",
-      "description": "Browse all available travel packages",
-      "url": "/packages",
-      "icons": [
+    "icons": [
         {
-          "src": "/santos-logo.png",
-          "sizes": "96x96",
-          "type": "image/png"
-        }
-      ]
-    },
-    {
-      "name": "My Bookings",
-      "short_name": "Bookings",
-      "description": "View your travel bookings",
-      "url": "/bookings",
-      "icons": [
+            "src": "/santos-logo.png",
+            "sizes": "72x72",
+            "type": "image/png",
+            "purpose": "any"
+        },
         {
-          "src": "/santos-logo.png",
-          "sizes": "96x96",
-          "type": "image/png"
+            "src": "/santos-logo.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/santos-logo.png",
+            "sizes": "128x128",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/santos-logo.png",
+            "sizes": "144x144",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/santos-logo.png",
+            "sizes": "152x152",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/santos-logo.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/santos-logo.png",
+            "sizes": "384x384",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/santos-logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
         }
-      ]
-    }
-  ]
+    ],
+    "shortcuts": [
+        {
+            "name": "Browse Packages",
+            "short_name": "Packages",
+            "description": "Browse all available travel packages",
+            "url": "/packages",
+            "icons": [
+                {
+                    "src": "/santos-logo.png",
+                    "sizes": "96x96",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "My Bookings",
+            "short_name": "Bookings",
+            "description": "View your travel bookings",
+            "url": "/bookings",
+            "icons": [
+                {
+                    "src": "/santos-logo.png",
+                    "sizes": "96x96",
+                    "type": "image/png"
+                }
+            ]
+        }
+    ]
 }
