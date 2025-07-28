@@ -4,6 +4,7 @@ import "./globals.css";
 import ConditionalLayout from "@/components/ConditionalLayout";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import PWAProvider from "@/components/PWAProvider";
+import PWADebug from "@/components/PWADebug";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,13 +21,6 @@ export const metadata: Metadata = {
   description: "Discover amazing travel destinations and book your dream vacation with Santos.travel. We offer tour packages to India, Europe, Asia, and worldwide destinations.",
   keywords: "travel, tours, vacation, holidays, travel packages, India tours, Europe tours, Asia tours, Santos.travel",
   manifest: "/manifest.json",
-  themeColor: "#f59e0b",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -48,6 +42,16 @@ export const metadata: Metadata = {
   },
 };
 
+export function generateViewport() {
+  return {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+    themeColor: '#f59e0b',
+  }
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -57,11 +61,15 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#f59e0b" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Santos Travel" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <link rel="apple-touch-icon" href="/santos-logo.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/santos-logo.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/santos-logo.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/santos-logo.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/santos-logo.png" />
         <link rel="icon" type="image/png" sizes="192x192" href="/santos-logo.png" />
         <link rel="icon" type="image/png" sizes="512x512" href="/santos-logo.png" />
       </head>
@@ -73,6 +81,7 @@ export default function RootLayout({
           {children}
         </ConditionalLayout>
         <PWAInstallPrompt />
+        <PWADebug />
       </body>
     </html>
   );

@@ -23,30 +23,39 @@ const PWAInstallPrompt = () => {
     const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     setIsIOS(iOS);
 
+    // Check if it's Android
+    const isAndroid = /Android/.test(navigator.userAgent);
+    
     // Check if app is already installed (standalone mode)
-    const standalone = window.matchMedia('(display-mode: standalone)').matches;
+    const standalone = window.matchMedia('(display-mode: standalone)').matches || 
+                      (window.navigator as any).standalone === true;
     setIsStandalone(standalone);
+
+    // Check if user already dismissed the prompt recently
+    const dismissed = localStorage.getItem('pwa-dismissed');
+    const dismissedTime = dismissed ? parseInt(dismissed) : 0;
+    const daysSinceDismissed = (Date.now() - dismissedTime) / (1000 * 60 * 60 * 24);
 
     // Listen for the beforeinstallprompt event
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
       
-      // Show install prompt after a delay if not dismissed before
+      // Show install prompt after a shorter delay for better UX
       setTimeout(() => {
-        if (!localStorage.getItem('pwa-dismissed')) {
+        if (daysSinceDismissed > 1) { // Show again after 1 day instead of 7
           setShowInstallPrompt(true);
         }
-      }, 3000); // Show after 3 seconds
+      }, 2000); // Show after 2 seconds instead of 3
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
-    // For iOS, show manual install instructions
-    if (iOS && !standalone && !localStorage.getItem('pwa-dismissed')) {
+    // For iOS and Android, show manual install instructions more aggressively
+    if ((iOS || isAndroid) && !standalone && daysSinceDismissed > 1) {
       setTimeout(() => {
         setShowInstallPrompt(true);
-      }, 3000);
+      }, 2000);
     }
 
     return () => {
@@ -72,12 +81,8 @@ const PWAInstallPrompt = () => {
 
   const handleDismiss = () => {
     setShowInstallPrompt(false);
-    localStorage.setItem('pwa-dismissed', 'true');
-    
-    // Clear the dismissal after 7 days
-    setTimeout(() => {
-      localStorage.removeItem('pwa-dismissed');
-    }, 7 * 24 * 60 * 60 * 1000);
+    // Store dismissal timestamp instead of just a flag
+    localStorage.setItem('pwa-dismissed', Date.now().toString());
   };
 
   // Don't show if already installed or dismissed

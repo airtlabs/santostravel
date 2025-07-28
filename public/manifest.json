@@ -6,38 +6,59 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#f59e0b",
-  "orientation": "portrait-primary",
+  "orientation": "any",
   "scope": "/",
   "lang": "en",
   "categories": ["travel", "lifestyle", "navigation"],
+  "prefer_related_applications": false,
   "icons": [
+    {
+      "src": "/santos-logo.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/santos-logo.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/santos-logo.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/santos-logo.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/santos-logo.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
     {
       "src": "/santos-logo.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "maskable any"
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/santos-logo.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/santos-logo.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable any"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/santos-logo.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Santos Travel - Home Screen"
-    },
-    {
-      "src": "/santos-logo.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Santos Travel - Mobile View"
+      "purpose": "any maskable"
     }
   ],
   "shortcuts": [
@@ -49,19 +70,21 @@
       "icons": [
         {
           "src": "/santos-logo.png",
-          "sizes": "96x96"
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     },
     {
-      "name": "Book Now",
-      "short_name": "Book",
-      "description": "Start booking your travel package",
-      "url": "/packages",
+      "name": "My Bookings",
+      "short_name": "Bookings",
+      "description": "View your travel bookings",
+      "url": "/bookings",
       "icons": [
         {
           "src": "/santos-logo.png",
-          "sizes": "96x96"
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     }
