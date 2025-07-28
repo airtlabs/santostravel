@@ -14,26 +14,39 @@ const PWADebug = () => {
       const hasServiceWorker = 'serviceWorker' in navigator;
       const hasManifest = document.querySelector('link[rel="manifest"]') !== null;
       const dismissed = localStorage.getItem('pwa-dismissed');
+      const hasBeforeInstallPrompt = 'onbeforeinstallprompt' in window;
       
       setDebug({
-        userAgent: navigator.userAgent.substring(0, 50) + '...',
+        userAgent: navigator.userAgent.substring(0, 80) + '...',
         isIOS,
         isAndroid,
         isStandalone,
         hasServiceWorker,
         hasManifest,
-        dismissed,
+        hasBeforeInstallPrompt,
+        dismissed: dismissed ? new Date(parseInt(dismissed)).toLocaleString() : 'No',
+        dismissedAgo: dismissed ? Math.round((Date.now() - parseInt(dismissed)) / (1000 * 60 * 60 * 24)) + ' days' : 'N/A',
         displayMode: window.matchMedia('(display-mode: standalone)').matches ? 'standalone' : 
                     window.matchMedia('(display-mode: minimal-ui)').matches ? 'minimal-ui' :
                     window.matchMedia('(display-mode: fullscreen)').matches ? 'fullscreen' : 'browser',
-        windowStandalone: (window.navigator as any).standalone
+        windowStandalone: (window.navigator as any).standalone,
+        chromeVersion: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || 'Not Chrome',
+        isSecure: location.protocol === 'https:',
+        swRegistered: 'serviceWorker' in navigator ? 'Checking...' : 'Not supported'
       });
+      
+      // Check service worker registration
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistration().then(registration => {
+          setDebug((prev: any) => ({ ...prev, swRegistered: registration ? 'Yes' : 'No' }));
+        });
+      }
     };
 
     checkPWAStatus();
     
-    // Update every 2 seconds
-    const interval = setInterval(checkPWAStatus, 2000);
+    // Update every 3 seconds
+    const interval = setInterval(checkPWAStatus, 3000);
     
     return () => clearInterval(interval);
   }, []);
@@ -56,9 +69,15 @@ const PWADebug = () => {
       ))}
       <button 
         onClick={() => localStorage.removeItem('pwa-dismissed')}
-        className="mt-2 bg-blue-500 text-white px-2 py-1 rounded text-xs"
+        className="mt-2 bg-blue-500 text-white px-2 py-1 rounded text-xs mr-2"
       >
         Clear PWA Dismissed
+      </button>
+      <button 
+        onClick={() => window.location.reload()}
+        className="mt-2 bg-green-500 text-white px-2 py-1 rounded text-xs"
+      >
+        Reload Page
       </button>
     </div>
   );

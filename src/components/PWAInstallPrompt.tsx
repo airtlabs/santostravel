@@ -17,6 +17,8 @@ const PWAInstallPrompt = () => {
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
+  const [installError, setInstallError] = useState<string>('');
+  const [canInstall, setCanInstall] = useState(false);
 
   useEffect(() => {
     // Check if it's iOS
@@ -38,8 +40,10 @@ const PWAInstallPrompt = () => {
 
     // Listen for the beforeinstallprompt event
     const handleBeforeInstallPrompt = (e: Event) => {
+      console.log('beforeinstallprompt event fired');
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
+      setCanInstall(true);
       
       // Show install prompt after a shorter delay for better UX
       setTimeout(() => {
@@ -55,6 +59,13 @@ const PWAInstallPrompt = () => {
     if ((iOS || isAndroid) && !standalone && daysSinceDismissed > 1) {
       setTimeout(() => {
         setShowInstallPrompt(true);
+        // For iOS, we can't use the install prompt API
+        if (iOS) {
+          setCanInstall(false);
+        } else {
+          // For Android, check if we have the deferred prompt
+          setCanInstall(!!deferredPrompt);
+        }
       }, 2000);
     }
 
@@ -64,18 +75,41 @@ const PWAInstallPrompt = () => {
   }, []);
 
   const handleInstallClick = async () => {
+    console.log('Install button clicked', { deferredPrompt, canInstall });
+    setInstallError('');
+    
     if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      
-      if (outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-      } else {
-        console.log('User dismissed the install prompt');
+      try {
+        await deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        
+        console.log('Install prompt outcome:', outcome);
+        
+        if (outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+          setShowInstallPrompt(false);
+        } else {
+          console.log('User dismissed the install prompt');
+          setInstallError('Installation cancelled by user');
+        }
+        
+        setDeferredPrompt(null);
+        setCanInstall(false);
+      } catch (error) {
+        console.error('Error during installation:', error);
+        setInstallError('Installation failed. Please try again.');
       }
+    } else {
+      // Fallback for when deferredPrompt is not available
+      console.log('No deferred prompt available');
+      setInstallError('Installation not available. Try refreshing the page.');
       
-      setDeferredPrompt(null);
-      setShowInstallPrompt(false);
+      // Show manual instructions
+      if (isIOS) {
+        alert('To install this app on iOS:\n\n1. Tap the Share button in Safari\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" in the top right corner');
+      } else {
+        alert('To install this app:\n\n1. Open Chrome menu (⋮)\n2. Select "Add to Home screen"\n3. Follow the prompts');
+      }
     }
   };
 
@@ -156,6 +190,13 @@ const PWAInstallPrompt = () => {
                 Works on desktop
               </div>
             </div>
+            
+            {installError && (
+              <div className="text-xs text-red-600 bg-red-50 p-2 rounded">
+                {installError}
+              </div>
+            )}
+            
             <div className="flex gap-2 mt-3">
               <button
                 onClick={handleDismiss}
@@ -165,10 +206,15 @@ const PWAInstallPrompt = () => {
               </button>
               <button
                 onClick={handleInstallClick}
-                className="flex-1 px-3 py-2 text-sm font-medium text-white bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-colors flex items-center justify-center"
+                disabled={!canInstall && !isIOS}
+                className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg transition-colors flex items-center justify-center ${
+                  canInstall || isIOS 
+                    ? 'text-white bg-yellow-500 hover:bg-yellow-600' 
+                    : 'text-gray-400 bg-gray-200 cursor-not-allowed'
+                }`}
               >
                 <Download className="h-4 w-4 mr-1" />
-                Install App
+                {canInstall ? 'Install App' : isIOS ? 'Install Guide' : 'Not Available'}
               </button>
             </div>
           </div>
