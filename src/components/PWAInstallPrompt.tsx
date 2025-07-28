@@ -119,11 +119,11 @@ const PWAInstallPrompt = () => {
               </div>
               <div className="flex items-center">
                 <span className="w-5 h-5 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-bold mr-2">2</span>
-                Scroll down and tap "Add to Home Screen"
+                Scroll down and tap &quot;Add to Home Screen&quot;
               </div>
               <div className="flex items-center">
                 <span className="w-5 h-5 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-bold mr-2">3</span>
-                Tap "Add" in the top right corner
+                Tap &quot;Add&quot; in the top right corner
               </div>
             </div>
             <div className="flex gap-2 mt-3">
