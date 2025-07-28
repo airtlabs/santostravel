@@ -178,3 +178,11 @@ export interface ItineraryDay {
     meals: string[]
     accommodation: string
 }
+
+// Export type aliases for easier use
+export type Package = Database['public']['Tables']['packages']['Row']
+export type PackageInsert = Database['public']['Tables']['packages']['Insert']
+export type PackageUpdate = Database['public']['Tables']['packages']['Update']
+export type Booking = Database['public']['Tables']['bookings']['Row']
+export type BookingInsert = Database['public']['Tables']['bookings']['Insert']
+export type BookingUpdate = Database['public']['Tables']['bookings']['Update']
