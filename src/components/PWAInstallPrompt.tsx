@@ -59,15 +59,18 @@ const PWAInstallPrompt = () => {
     if ((iOS || isAndroid) && !standalone && daysSinceDismissed > 1) {
       setTimeout(() => {
         setShowInstallPrompt(true);
-        // For iOS, we can't use the install prompt API
-        if (iOS) {
-          setCanInstall(false);
-        } else {
-          // For Android, check if we have the deferred prompt
-          setCanInstall(!!deferredPrompt);
-        }
+        // Always allow installation guidance, even without beforeinstallprompt
+        setCanInstall(true);
       }, 2000);
     }
+
+    // If no beforeinstallprompt after 5 seconds, still show install option
+    setTimeout(() => {
+      if (!deferredPrompt && !standalone && daysSinceDismissed > 1) {
+        setShowInstallPrompt(true);
+        setCanInstall(true); // Allow manual installation guidance
+      }
+    }, 5000);
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -75,7 +78,7 @@ const PWAInstallPrompt = () => {
   }, []);
 
   const handleInstallClick = async () => {
-    console.log('Install button clicked', { deferredPrompt, canInstall });
+    console.log('Install button clicked', { deferredPrompt, canInstall, isIOS });
     setInstallError('');
     
     if (deferredPrompt) {
@@ -100,16 +103,25 @@ const PWAInstallPrompt = () => {
         setInstallError('Installation failed. Please try again.');
       }
     } else {
-      // Fallback for when deferredPrompt is not available
-      console.log('No deferred prompt available');
-      setInstallError('Installation not available. Try refreshing the page.');
+      // Always provide manual instructions when native prompt isn't available
+      console.log('No deferred prompt available, showing manual instructions');
       
-      // Show manual instructions
       if (isIOS) {
-        alert('To install this app on iOS:\n\n1. Tap the Share button in Safari\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" in the top right corner');
+        alert('📱 Install Santos Travel on iOS:\n\n1. Tap the Share button (↗️) in Safari\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" in the top right corner\n\n✨ You\'ll then have the app on your home screen!');
       } else {
-        alert('To install this app:\n\n1. Open Chrome menu (⋮)\n2. Select "Add to Home screen"\n3. Follow the prompts');
+        // For Android Chrome or other browsers
+        const isChrome = /Chrome/.test(navigator.userAgent);
+        if (isChrome) {
+          alert('📱 Install Santos Travel on Android:\n\n1. Tap the menu (⋮) in Chrome\n2. Select "Add to Home screen" or "Install app"\n3. Tap "Add" or "Install"\n\n✨ You\'ll then have the app on your home screen!');
+        } else {
+          alert('📱 Install Santos Travel:\n\nFor the best experience, please:\n1. Open this site in Chrome or Safari\n2. Look for "Add to Home Screen" option\n3. Follow the browser prompts\n\n✨ This will give you app-like experience!');
+        }
       }
+      
+      // Don't show error, just dismiss the prompt after showing instructions
+      setTimeout(() => {
+        setShowInstallPrompt(false);
+      }, 1000);
     }
   };
 
@@ -206,15 +218,10 @@ const PWAInstallPrompt = () => {
               </button>
               <button
                 onClick={handleInstallClick}
-                disabled={!canInstall && !isIOS}
-                className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg transition-colors flex items-center justify-center ${
-                  canInstall || isIOS 
-                    ? 'text-white bg-yellow-500 hover:bg-yellow-600' 
-                    : 'text-gray-400 bg-gray-200 cursor-not-allowed'
-                }`}
+                className="flex-1 px-3 py-2 text-sm font-medium text-white bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-colors flex items-center justify-center"
               >
                 <Download className="h-4 w-4 mr-1" />
-                {canInstall ? 'Install App' : isIOS ? 'Install Guide' : 'Not Available'}
+                {deferredPrompt ? 'Install App' : isIOS ? 'Install Guide' : 'Install Guide'}
               </button>
             </div>
           </div>
