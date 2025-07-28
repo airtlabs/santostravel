@@ -32,7 +32,14 @@ const PWADebug = () => {
         windowStandalone: (window.navigator as any).standalone,
         chromeVersion: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || 'Not Chrome',
         isSecure: location.protocol === 'https:',
-        swRegistered: 'serviceWorker' in navigator ? 'Checking...' : 'Not supported'
+        swRegistered: 'serviceWorker' in navigator ? 'Checking...' : 'Not supported',
+        deferredPromptAvailable: (window as any).deferredInstallPrompt ? 'Yes' : 'No',
+        installCriteria: {
+          https: location.protocol === 'https:',
+          manifest: document.querySelector('link[rel="manifest"]') !== null,
+          serviceWorker: 'serviceWorker' in navigator,
+          notInstalled: !window.matchMedia('(display-mode: standalone)').matches
+        }
       });
       
       // Check service worker registration
@@ -76,35 +83,28 @@ const PWADebug = () => {
       <h3 className="font-bold mb-2">PWA Debug Info</h3>
       {Object.entries(debug).map(([key, value]) => (
         <div key={key} className="mb-1">
-          <strong>{key}:</strong> {String(value)}
+          <strong>{key}:</strong> {typeof value === 'object' ? JSON.stringify(value) : String(value)}
         </div>
       ))}
-      <button 
-        onClick={() => localStorage.removeItem('pwa-dismissed')}
-        className="mt-2 bg-blue-500 text-white px-2 py-1 rounded text-xs mr-2"
-      >
-        Clear PWA Dismissed
-      </button>
-              <div className="flex gap-2 mt-4">
-          <button
-            onClick={clearDismissed}
-            className="px-3 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600"
-          >
-            Clear Dismissal
-          </button>
-          <button
-            onClick={forceShowInstall}
-            className="px-3 py-2 bg-green-500 text-white text-sm rounded hover:bg-green-600"
-          >
-            Force Install Prompt
-          </button>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-3 py-2 bg-gray-500 text-white text-sm rounded hover:bg-gray-600"
-          >
-            Reload Page
-          </button>
-        </div>
+      <div className="flex gap-1 mt-4">
+        <button
+          onClick={clearDismissed}
+          className="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600"
+        >
+          Clear
+        </button>
+        <button
+          onClick={forceShowInstall}
+          className="px-2 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600"
+        >
+          Force
+        </button>
+        <button
+          onClick={() => window.location.reload()}
+          className="px-2 py-1 bg-gray-500 text-white text-xs rounded hover:bg-gray-600"
+        >
+          Reload
+        </button>
       </div>
     </div>
   );

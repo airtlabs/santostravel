@@ -53,7 +53,22 @@ const PWAInstallPrompt = () => {
       }, 1000); // Show after 1 second for testing
     };
 
+    // Also listen for custom install events
+    const handleCustomInstall = () => {
+      console.log('Custom install event triggered');
+      setCanInstall(true);
+      setShowInstallPrompt(true);
+    };
+
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('custominstallprompt', handleCustomInstall);
+
+    // Check for existing deferred prompt in case it was stored
+    if ((window as any).deferredInstallPrompt) {
+      console.log('Found existing deferred prompt');
+      setDeferredPrompt((window as any).deferredInstallPrompt);
+      setCanInstall(true);
+    }
 
     // For iOS and Android, show manual install instructions more aggressively
     if ((iOS || isAndroid) && !standalone && daysSinceDismissed > 0.1) {
@@ -74,6 +89,7 @@ const PWAInstallPrompt = () => {
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('custominstallprompt', handleCustomInstall);
     };
   }, []);
 
@@ -81,8 +97,10 @@ const PWAInstallPrompt = () => {
     console.log('Install button clicked', { deferredPrompt, canInstall, isIOS });
     setInstallError('');
     
+    // First try the native installation if available
     if (deferredPrompt) {
       try {
+        console.log('Attempting native installation...');
         await deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
         
@@ -91,38 +109,64 @@ const PWAInstallPrompt = () => {
         if (outcome === 'accepted') {
           console.log('User accepted the install prompt');
           setShowInstallPrompt(false);
+          // Clear the prompt so it doesn't show again
+          localStorage.setItem('pwa-installed', 'true');
         } else {
           console.log('User dismissed the install prompt');
-          setInstallError('Installation cancelled by user');
+          setInstallError('Installation cancelled. Try again or use manual installation.');
         }
         
         setDeferredPrompt(null);
         setCanInstall(false);
+        return;
       } catch (error) {
-        console.error('Error during installation:', error);
-        setInstallError('Installation failed. Please try again.');
+        console.error('Error during native installation:', error);
+        setInstallError('Native installation failed. Trying alternative method...');
       }
-    } else {
-      // Always provide manual instructions when native prompt isn't available
-      console.log('No deferred prompt available, showing manual instructions');
-      
+    }
+
+    // If native installation fails or isn't available, try alternative methods
+    console.log('Attempting alternative installation methods...');
+    
+    // For newer Android Chrome versions, try triggering install event
+    if (!isIOS && 'BeforeInstallPromptEvent' in window) {
+      try {
+        // Try to trigger install through service worker message
+        if ('serviceWorker' in navigator) {
+          const registration = await navigator.serviceWorker.ready;
+          registration.active?.postMessage({ type: 'TRIGGER_INSTALL' });
+        }
+      } catch (error) {
+        console.log('Service worker install trigger failed:', error);
+      }
+    }
+
+    // Fallback to manual instructions with better UX
+    setTimeout(() => {
       if (isIOS) {
-        alert('📱 Install Santos Travel on iOS:\n\n1. Tap the Share button (↗️) in Safari\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" in the top right corner\n\n✨ You\'ll then have the app on your home screen!');
+        const confirmed = confirm('📱 Install Santos Travel:\n\n1. Tap the Share button (↗️) below\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add"\n\nWould you like to proceed with manual installation?');
+        if (confirmed) {
+          // Try to trigger iOS share sheet programmatically (limited support)
+          if (navigator.share) {
+            navigator.share({
+              title: 'Santos Travel',
+              text: 'Install Santos Travel App',
+              url: window.location.href
+            }).catch(console.log);
+          }
+        }
       } else {
-        // For Android Chrome or other browsers
         const isChrome = /Chrome/.test(navigator.userAgent);
         if (isChrome) {
-          alert('📱 Install Santos Travel on Android:\n\n1. Tap the menu (⋮) in Chrome\n2. Select "Add to Home screen" or "Install app"\n3. Tap "Add" or "Install"\n\n✨ You\'ll then have the app on your home screen!');
+          const confirmed = confirm('📱 Install Santos Travel:\n\n1. Tap the menu (⋮) in Chrome\n2. Select "Add to Home screen"\n3. Tap "Install"\n\nWould you like me to help you find the menu?');
+          if (confirmed) {
+            setInstallError('Look for the menu (⋮) in your browser and select "Add to Home screen"');
+          }
         } else {
-          alert('📱 Install Santos Travel:\n\nFor the best experience, please:\n1. Open this site in Chrome or Safari\n2. Look for "Add to Home Screen" option\n3. Follow the browser prompts\n\n✨ This will give you app-like experience!');
+          alert('📱 For automatic installation:\n\n• Use Chrome on Android\n• Use Safari on iPhone\n• Make sure you\'re on HTTPS\n\nThen try the install button again!');
         }
       }
-      
-      // Don't show error, just dismiss the prompt after showing instructions
-      setTimeout(() => {
-        setShowInstallPrompt(false);
-      }, 1000);
-    }
+    }, 500);
   };
 
   const handleDismiss = () => {
@@ -146,7 +190,9 @@ const PWAInstallPrompt = () => {
             </div>
             <div>
               <h3 className="font-semibold text-gray-900">Install Santos Travel</h3>
-              <p className="text-xs text-gray-600">Get the full app experience</p>
+              <p className="text-xs text-gray-600">
+                {deferredPrompt ? '⚡ Auto-install ready' : 'Get the full app experience'}
+              </p>
             </div>
           </div>
           <button
@@ -221,7 +267,7 @@ const PWAInstallPrompt = () => {
                 className="flex-1 px-3 py-2 text-sm font-medium text-white bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-colors flex items-center justify-center"
               >
                 <Download className="h-4 w-4 mr-1" />
-                {deferredPrompt ? 'Install App' : isIOS ? 'Install Guide' : 'Install Guide'}
+                {deferredPrompt ? 'Install Now' : 'Install App'}
               </button>
             </div>
           </div>

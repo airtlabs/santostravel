@@ -26,6 +26,15 @@ self.addEventListener('install', (event) => {
   );
 });
 
+// Listen for install trigger messages
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'TRIGGER_INSTALL') {
+    console.log('Received install trigger from main thread');
+    // Try to trigger beforeinstallprompt on clients
+    event.ports[0]?.postMessage({ success: true });
+  }
+});
+
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
   console.log('Service Worker activating');
