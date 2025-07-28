@@ -81,7 +81,7 @@ export default function RootLayout({
           {children}
         </ConditionalLayout>
         <PWAInstallPrompt />
-        <PWADebug />
+        {process.env.NODE_ENV === 'development' && <PWADebug />}
       </body>
     </html>
   );

@@ -74,7 +74,8 @@ const PWADebug = () => {
     window.location.reload();
   };
 
-  if (!debug || Object.keys(debug).length === 0) {
+  // Don't show if not in debug mode or if debug data is empty
+  if (!showDebug || !debug || Object.keys(debug).length === 0) {
     return null;
   }
 
