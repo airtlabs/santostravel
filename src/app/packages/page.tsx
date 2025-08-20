@@ -3,11 +3,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { MapPin, Calendar, Users, Star, Search, Filter, X } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { usePackages } from '@/hooks/usePackages';
 
-const PackagesPage = () => {
+const PackagesContent = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [selectedDuration, setSelectedDuration] = useState('all');
@@ -410,6 +410,14 @@ const PackagesPage = () => {
                 </div>
             </div>
         </div>
+    );
+};
+
+const PackagesPage = () => {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading packages...</div>}>
+            <PackagesContent />
+        </Suspense>
     );
 };
 
