@@ -3,9 +3,10 @@ import { createAdminClient } from '@/lib/supabase'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const body = await request.json()
     const supabase = createAdminClient()
     
@@ -13,7 +14,7 @@ export async function POST(
       .from('itinerary_items')
       .insert([{ 
         ...body, 
-        itinerary_id: params.id 
+        itinerary_id: id 
       }])
       .select()
       .single()
@@ -34,9 +35,10 @@ export async function POST(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const body = await request.json()
     const { items } = body // Array of items to update
     const supabase = createAdminClient()
@@ -47,7 +49,7 @@ export async function PUT(
         .from('itinerary_items')
         .update(item)
         .eq('id', item.id)
-        .eq('itinerary_id', params.id)
+        .eq('itinerary_id', id)
     )
 
     const results = await Promise.all(updates)

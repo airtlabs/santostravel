@@ -3,17 +3,18 @@ import { createAdminClient } from '@/lib/supabase'
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string; itemId: string } }
+  { params }: { params: Promise<{ id: string; itemId: string }> }
 ) {
   try {
+    const { id, itemId } = await params
     const body = await request.json()
     const supabase = createAdminClient()
     
     const { data: item, error } = await supabase
       .from('itinerary_items')
       .update(body)
-      .eq('id', params.itemId)
-      .eq('itinerary_id', params.id)
+      .eq('id', itemId)
+      .eq('itinerary_id', id)
       .select()
       .single()
 
@@ -33,16 +34,17 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string; itemId: string } }
+  { params }: { params: Promise<{ id: string; itemId: string }> }
 ) {
   try {
+    const { id, itemId } = await params
     const supabase = createAdminClient()
     
     const { error } = await supabase
       .from('itinerary_items')
       .delete()
-      .eq('id', params.itemId)
-      .eq('itinerary_id', params.id)
+      .eq('id', itemId)
+      .eq('itinerary_id', id)
 
     if (error) {
       throw error
