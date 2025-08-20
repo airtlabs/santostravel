@@ -4,7 +4,6 @@ import "./globals.css";
 import ConditionalLayout from "@/components/ConditionalLayout";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import PWAProvider from "@/components/PWAProvider";
-import PWADebug from "@/components/PWADebug";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -81,7 +80,6 @@ export default function RootLayout({
           {children}
         </ConditionalLayout>
         <PWAInstallPrompt />
-        {process.env.NODE_ENV === 'development' && <PWADebug />}
       </body>
     </html>
   );

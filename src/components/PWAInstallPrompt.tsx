@@ -40,7 +40,6 @@ const PWAInstallPrompt = () => {
 
         // Listen for the beforeinstallprompt event
         const handleBeforeInstallPrompt = (e: Event) => {
-            console.log('beforeinstallprompt event fired');
             e.preventDefault();
             setDeferredPrompt(e as BeforeInstallPromptEvent);
             setCanInstall(true);
@@ -55,7 +54,6 @@ const PWAInstallPrompt = () => {
 
         // Also listen for custom install events
         const handleCustomInstall = () => {
-            console.log('Custom install event triggered');
             setCanInstall(true);
             setShowInstallPrompt(true);
         };
@@ -65,7 +63,6 @@ const PWAInstallPrompt = () => {
 
         // Check for existing deferred prompt in case it was stored
         if ((window as any).deferredInstallPrompt) {
-            console.log('Found existing deferred prompt');
             setDeferredPrompt((window as any).deferredInstallPrompt);
             setCanInstall(true);
         }
@@ -94,25 +91,19 @@ const PWAInstallPrompt = () => {
     }, []);
 
     const handleInstallClick = async () => {
-        console.log('Install button clicked', { deferredPrompt, canInstall, isIOS });
         setInstallError('');
 
         // First try the native installation if available
         if (deferredPrompt) {
             try {
-                console.log('Attempting native installation...');
                 await deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
 
-                console.log('Install prompt outcome:', outcome);
-
                 if (outcome === 'accepted') {
-                    console.log('User accepted the install prompt');
                     setShowInstallPrompt(false);
                     // Clear the prompt so it doesn't show again
                     localStorage.setItem('pwa-installed', 'true');
                 } else {
-                    console.log('User dismissed the install prompt');
                     setInstallError('Installation cancelled. Try again or use manual installation.');
                 }
 
@@ -120,14 +111,11 @@ const PWAInstallPrompt = () => {
                 setCanInstall(false);
                 return;
             } catch (error) {
-                console.error('Error during native installation:', error);
                 setInstallError('Native installation failed. Trying alternative method...');
             }
         }
 
         // If native installation fails or isn't available, try alternative methods
-        console.log('Attempting alternative installation methods...');
-
         // For newer Android Chrome versions, try triggering install event
         if (!isIOS && 'BeforeInstallPromptEvent' in window) {
             try {
@@ -137,7 +125,7 @@ const PWAInstallPrompt = () => {
                     registration.active?.postMessage({ type: 'TRIGGER_INSTALL' });
                 }
             } catch (error) {
-                console.log('Service worker install trigger failed:', error);
+                // Service worker install trigger failed silently
             }
         }
 
@@ -152,7 +140,7 @@ const PWAInstallPrompt = () => {
                             title: 'Santos Travel',
                             text: 'Install Santos Travel App',
                             url: window.location.href
-                        }).catch(console.log);
+                        }).catch(() => { });
                     }
                 }
             } else {

@@ -168,7 +168,7 @@ const Footer = () => {
                 <li><Link href="/become-partner" className="hover:text-white">Become A Sales Partner</Link></li>
                 <li><Link href="/careers" className="hover:text-white">Careers We&apos;re Hiring!</Link></li>
                 <li><Link href="/csr" className="hover:text-white">CSR Policy</Link></li>
-                <li><Link href="/portfolio" className="hover:text-white">Create Your Travel Portfolio</Link></li>
+                {/* <li><Link href="/portfolio" className="hover:text-white">Create Your Travel Portfolio</Link></li> */}
               </ul>
             </div>
 
@@ -181,7 +181,7 @@ const Footer = () => {
                 <li><Link href="/how-to-book" className="hover:text-white">How To Book</Link></li>
                 <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
                 <li><Link href="/travel-deals" className="hover:text-white">Travel Deals</Link></li>
-                <li><Link href="/covid-notice" className="hover:text-white">COVID-19 Public Notice</Link></li>
+                {/* <li><Link href="/covid-notice" className="hover:text-white">COVID-19 Public Notice</Link></li> */}
                 <li><Link href="/singapore-visa" className="hover:text-white">Singapore Visa</Link></li>
                 <li><Link href="/annual-return" className="hover:text-white">Annual Return</Link></li>
                 <li><Link href="/corporate-governance" className="hover:text-white">Corporate Governance</Link></li>
@@ -196,9 +196,6 @@ const Footer = () => {
                 <li><Link href="/blog" className="hover:text-white">Blog</Link></li>
                 <li><Link href="/podcasts" className="hover:text-white">Podcasts</Link></li>
                 <li><Link href="/video-blogs" className="hover:text-white">Video Blogs</Link></li>
-                <li><Link href="/articles-veena" className="hover:text-white">Articles By Veena Patil</Link></li>
-                <li><Link href="/articles-sunita" className="hover:text-white">Articles By Sunita Patil</Link></li>
-                <li><Link href="/articles-neil" className="hover:text-white">Articles By Neil Patil</Link></li>
                 <li><Link href="/travel-planners" className="hover:text-white">Travel Planners</Link></li>
               </ul>
             </div>
@@ -220,7 +217,7 @@ const Footer = () => {
 
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6 text-xs mb-4 md:mb-0">
-              <p>© 2013 - 25 Santos Patil Hospitality Pvt Ltd. All Rights Reserved.</p>
+              <p>© 2013 - 2025 <span className="font-bold">santos.travel</span>. All Rights Reserved.</p>
               <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
               <Link href="/terms" className="hover:text-white">Terms & Conditions</Link>
               <Link href="/sitemap" className="hover:text-white">Site Map</Link>

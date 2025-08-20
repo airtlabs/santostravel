@@ -125,16 +125,16 @@ const AdminBookingsPage = () => {
         <AdminLayout>
             <div className="space-y-6">
                 {/* Header */}
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900">Booking Management</h1>
-                        <p className="text-gray-600 mt-1">Manage customer bookings and reservations</p>
+                        <h1 className="text-xl lg:text-3xl font-bold text-gray-900">Booking Management</h1>
+                        <p className="text-gray-600 mt-1 text-sm lg:text-base">Manage customer bookings and reservations</p>
                     </div>
                 </div>
 
                 {/* Filters */}
-                <div className="bg-white rounded-lg shadow p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-white rounded-lg shadow p-4 lg:p-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Search Bookings
@@ -146,7 +146,7 @@ const AdminBookingsPage = () => {
                                     placeholder="Search by name, email, or package..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500"
+                                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 text-sm"
                                 />
                             </div>
                         </div>
@@ -157,7 +157,7 @@ const AdminBookingsPage = () => {
                             <select
                                 value={statusFilter}
                                 onChange={(e) => setStatusFilter(e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 text-sm"
                             >
                                 <option value="all">All Status</option>
                                 <option value="pending">Pending</option>
@@ -172,7 +172,7 @@ const AdminBookingsPage = () => {
                             <select
                                 value={paymentFilter}
                                 onChange={(e) => setPaymentFilter(e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 text-sm"
                             >
                                 <option value="all">All Payments</option>
                                 <option value="pending">Pending</option>
@@ -197,7 +197,87 @@ const AdminBookingsPage = () => {
                     </div>
                 ) : (
                     <div className="bg-white rounded-lg shadow overflow-hidden">
-                        <div className="overflow-x-auto">
+                        {/* Mobile Cards */}
+                        <div className="lg:hidden">
+                            {filteredBookings.map((booking) => (
+                                <div key={booking.id} className="border-b border-gray-200 p-4 last:border-b-0">
+                                    <div className="flex justify-between items-start mb-3">
+                                        <div className="flex-1">
+                                            <h3 className="font-medium text-gray-900 text-sm">{booking.user_name}</h3>
+                                            <p className="text-xs text-gray-500 flex items-center gap-1">
+                                                <Mail className="h-3 w-3" />
+                                                {booking.user_email}
+                                            </p>
+                                            <p className="text-xs text-gray-500 flex items-center gap-1">
+                                                <Phone className="h-3 w-3" />
+                                                {booking.user_phone}
+                                            </p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-sm font-semibold text-gray-900">₹{booking.total_amount.toLocaleString()}</p>
+                                            <p className="text-xs text-gray-500">ID: {booking.id.split('-')[0]}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <p className="text-sm font-medium text-blue-600 mb-1">{booking.packages.title}</p>
+                                        <p className="text-xs text-gray-500 flex items-center gap-1">
+                                            <MapPin className="h-3 w-3" />
+                                            {booking.packages.destination}
+                                        </p>
+                                        <p className="text-xs text-gray-500 flex items-center gap-1">
+                                            <Calendar className="h-3 w-3" />
+                                            Travel: {new Date(booking.travel_date).toLocaleDateString()}
+                                        </p>
+                                        <p className="text-xs text-gray-500 flex items-center gap-1">
+                                            <Users className="h-3 w-3" />
+                                            {booking.participants} participants
+                                        </p>
+                                    </div>
+
+                                    <div className="mb-3 flex gap-2">
+                                        <select
+                                            value={booking.status}
+                                            onChange={(e) => updateBookingStatus(booking.id, e.target.value)}
+                                            className={`text-xs px-2 py-1 rounded-full border-0 flex-1 ${getStatusColor(booking.status)}`}
+                                        >
+                                            <option value="pending">Pending</option>
+                                            <option value="confirmed">Confirmed</option>
+                                            <option value="cancelled">Cancelled</option>
+                                        </select>
+                                        <select
+                                            value={booking.payment_status}
+                                            onChange={(e) => updatePaymentStatus(booking.id, e.target.value)}
+                                            className={`text-xs px-2 py-1 rounded-full border-0 flex-1 ${getPaymentStatusColor(booking.payment_status)}`}
+                                        >
+                                            <option value="pending">Payment Pending</option>
+                                            <option value="paid">Paid</option>
+                                            <option value="failed">Failed</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="flex justify-between items-center">
+                                        <p className="text-xs text-gray-500">
+                                            Booked: {new Date(booking.created_at).toLocaleDateString()}
+                                        </p>
+                                        <div className="flex gap-2">
+                                            <button className="text-blue-600 hover:text-blue-900 p-1">
+                                                <Eye className="h-4 w-4" />
+                                            </button>
+                                            <button className="text-green-600 hover:text-green-900 p-1">
+                                                <Edit className="h-4 w-4" />
+                                            </button>
+                                            <button className="text-red-600 hover:text-red-900 p-1">
+                                                <Trash2 className="h-4 w-4" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Desktop Table */}
+                        <div className="hidden lg:block overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-gray-50">
                                     <tr>

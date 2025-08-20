@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { MapPin, Calendar, Users, Star, Search, Filter, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { usePackages } from '@/hooks/usePackages';
 
 const PackagesPage = () => {
@@ -15,13 +16,63 @@ const PackagesPage = () => {
     const [statusFilter, setStatusFilter] = useState('published');
     const [sortBy, setSortBy] = useState('price-low');
 
+    // Read query params from URL
+    const searchParams = useSearchParams();
+    useEffect(() => {
+        // Category
+        const category = searchParams.get('category');
+        if (category) setSelectedCategory(category);
+        // Zone (set as destination filter and search query)
+        const zone = searchParams.get('zone');
+        if (zone) {
+            const zoneText = zone.replace(/-/g, ' ');
+            setSelectedDestination(zoneText);
+            setSearchQuery(zoneText);
+        }
+        // State (set as destination filter and search query)
+        const state = searchParams.get('state');
+        if (state) {
+            const stateText = state.replace(/-/g, ' ');
+            setSelectedDestination(stateText);
+            setSearchQuery(stateText);
+        }
+        // Interest (set as search query)
+        const interest = searchParams.get('interest');
+        if (interest) {
+            const interestText = interest.replace(/-/g, ' ');
+            setSearchQuery(interestText);
+        }
+        // Season (set as search query)
+        const season = searchParams.get('season');
+        if (season) {
+            const seasonText = season.replace(/-/g, ' ');
+            setSearchQuery(seasonText);
+        }
+        // Duration
+        const duration = searchParams.get('duration');
+        if (duration) setSelectedDuration(duration);
+    }, [searchParams]);
+
     const { packages: dbPackages, loading, error } = usePackages();
 
     // Filter packages based on all criteria
     const filteredPackages = dbPackages.filter(pkg => {
-        const matchesSearch = pkg.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            pkg.destination.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            pkg.description.toLowerCase().includes(searchQuery.toLowerCase());
+        const search = searchQuery.toLowerCase();
+        const matchesSearch =
+            pkg.title.toLowerCase().includes(search) ||
+            pkg.destination.toLowerCase().includes(search) ||
+            pkg.description.toLowerCase().includes(search);
+
+        // Also match zone, state, interest, season in title
+        const zone = searchParams.get('zone');
+        const state = searchParams.get('state');
+        const interest = searchParams.get('interest');
+        const season = searchParams.get('season');
+        let matchesMenuFilter = true;
+        if (zone && !pkg.title.toLowerCase().includes(zone.replace(/-/g, ' '))) matchesMenuFilter = false;
+        if (state && !pkg.title.toLowerCase().includes(state.replace(/-/g, ' '))) matchesMenuFilter = false;
+        if (interest && !pkg.title.toLowerCase().includes(interest.replace(/-/g, ' '))) matchesMenuFilter = false;
+        if (season && !pkg.title.toLowerCase().includes(season.replace(/-/g, ' '))) matchesMenuFilter = false;
 
         const matchesCategory = selectedCategory === 'all' || pkg.category === selectedCategory;
         const matchesStatus = statusFilter === 'all' || pkg.status === statusFilter;
@@ -37,7 +88,7 @@ const PackagesPage = () => {
         const matchesDestination = selectedDestination === 'all' ||
             pkg.destination.toLowerCase().includes(selectedDestination.toLowerCase());
 
-        return matchesSearch && matchesCategory && matchesStatus && matchesDuration && matchesPrice && matchesDestination;
+        return matchesSearch && matchesMenuFilter && matchesCategory && matchesStatus && matchesDuration && matchesPrice && matchesDestination;
     }).sort((a, b) => {
         switch (sortBy) {
             case 'price-low': return a.price - b.price;

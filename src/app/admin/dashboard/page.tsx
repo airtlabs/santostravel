@@ -196,28 +196,29 @@ const AdminDashboard = () => {
 
     return (
         <AdminLayout>
-            <div className="py-8">
+            <div className="py-4 lg:py-8">
                 {/* Header */}
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-                    <div className="flex justify-between items-center">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 lg:mb-8">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                         <div>
-                            <h1 className="text-2xl font-bold text-gray-900">Package Management</h1>
-                            <p className="text-gray-600">Manage your travel packages and bookings</p>
+                            <h1 className="text-xl lg:text-2xl font-bold text-gray-900">Package Management</h1>
+                            <p className="text-gray-600 text-sm lg:text-base">Manage your travel packages and bookings</p>
                         </div>
                         <div className="flex items-center gap-4">
                             <Link
                                 href="/admin/packages/new"
-                                className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-colors"
+                                className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 lg:px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-colors text-sm lg:text-base"
                             >
                                 <Plus className="h-4 w-4" />
-                                Add New Package
+                                <span className="hidden sm:inline">Add New Package</span>
+                                <span className="sm:hidden">Add Package</span>
                             </Link>
                         </div>
                     </div>
                 </div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Stats Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6 lg:mb-8">
                         <div className="bg-white rounded-lg shadow-sm p-6 border">
                             <div className="flex items-center justify-between">
                                 <div>
@@ -289,27 +290,27 @@ const AdminDashboard = () => {
 
                     {/* Filters and Search */}
                     <div className="bg-white rounded-lg shadow-sm border mb-6">
-                        <div className="p-6">
-                            <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+                        <div className="p-4 lg:p-6">
+                            <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center lg:justify-between">
                                 {/* Search */}
-                                <div className="relative flex-1 max-w-md">
+                                <div className="relative flex-1 max-w-full lg:max-w-md">
                                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                                     <input
                                         type="text"
                                         placeholder="Search packages..."
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
-                                        className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                        className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-sm"
                                     />
                                 </div>
 
                                 {/* Filters */}
-                                <div className="flex items-center gap-4">
-                                    <Filter className="h-4 w-4 text-gray-400" />
+                                <div className="flex items-center gap-3">
+                                    <Filter className="h-4 w-4 text-gray-400 hidden lg:block" />
                                     <select
                                         value={filterStatus}
                                         onChange={(e) => setFilterStatus(e.target.value)}
-                                        className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                        className="px-3 lg:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-sm w-full lg:w-auto"
                                     >
                                         <option value="all">All Status</option>
                                         <option value="published">Published</option>
@@ -323,11 +324,64 @@ const AdminDashboard = () => {
 
                     {/* Packages Table */}
                     <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
-                        <div className="px-6 py-4 border-b">
+                        <div className="px-4 lg:px-6 py-4 border-b">
                             <h2 className="text-lg font-semibold text-gray-900">All Packages</h2>
                         </div>
 
-                        <div className="overflow-x-auto">
+                        {/* Mobile Cards */}
+                        <div className="lg:hidden">
+                            {filteredPackages.map((pkg) => (
+                                <div key={pkg.id} className="border-b border-gray-200 p-4">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <div className="flex-1">
+                                            <h3 className="font-medium text-gray-900 text-sm">{pkg.title}</h3>
+                                            <p className="text-xs text-gray-500">{pkg.destination}</p>
+                                        </div>
+                                        <div className="flex items-center gap-2 ml-4">
+                                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${pkg.status === 'published'
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : pkg.status === 'draft'
+                                                        ? 'bg-yellow-100 text-yellow-800'
+                                                        : 'bg-gray-100 text-gray-800'
+                                                }`}>
+                                                {pkg.status}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between items-center text-xs text-gray-500 mb-3">
+                                        <span>{pkg.category}</span>
+                                        <span>₹{pkg.price?.toLocaleString()}</span>
+                                        <span>{pkg.duration}</span>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <Link
+                                            href={`/admin/packages/edit/${pkg.id}`}
+                                            className="flex items-center gap-1 px-2 py-1 text-xs text-blue-600 hover:bg-blue-50 rounded"
+                                        >
+                                            <Edit className="h-3 w-3" />
+                                            Edit
+                                        </Link>
+                                        <Link
+                                            href={`/package/${pkg.id}`}
+                                            className="flex items-center gap-1 px-2 py-1 text-xs text-green-600 hover:bg-green-50 rounded"
+                                        >
+                                            <Eye className="h-3 w-3" />
+                                            View
+                                        </Link>
+                                        <button
+                                            onClick={() => handleDeletePackage(pkg.id)}
+                                            className="flex items-center gap-1 px-2 py-1 text-xs text-red-600 hover:bg-red-50 rounded"
+                                        >
+                                            <Trash2 className="h-3 w-3" />
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Desktop Table */}
+                        <div className="hidden lg:block overflow-x-auto">
                             <table className="w-full">
                                 <thead className="bg-gray-50">
                                     <tr>

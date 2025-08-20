@@ -46,41 +46,41 @@ const Header = () => {
   const navigationItems = [
     {
       name: 'India',
-      href: '/india',
+      href: '/packages?category=india',
       hasDropdown: true,
       dropdownContent: {
         zones: [
-          { name: 'North India', href: '/india/north' },
-          { name: 'South India', href: '/india/south' },
-          { name: 'East & North East India', href: '/india/east' },
-          { name: 'West & Central India', href: '/india/west' },
+          { name: 'North India', href: '/packages?zone=north-india' },
+          { name: 'South India', href: '/packages?zone=south-india' },
+          { name: 'East & North East India', href: '/packages?zone=east-north-east-india' },
+          { name: 'West & Central India', href: '/packages?zone=west-central-india' },
         ],
         states: [
-          { name: 'Rajasthan', tours: 52, image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=200&h=120&fit=crop', href: '/india/rajasthan' },
-          { name: 'Kerala', tours: 37, image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=200&h=120&fit=crop', href: '/india/kerala' },
-          { name: 'Himachal Pradesh', tours: 39, image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=120&fit=crop', href: '/india/himachal-pradesh' },
-          { name: 'Uttarakhand', tours: 25, image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=200&h=120&fit=crop', href: '/india/uttarakhand' },
-          { name: 'Leh Ladakh', tours: 15, image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=200&h=120&fit=crop', href: '/india/leh-ladakh' },
-          { name: 'Jammu And Kashmir', tours: 15, image: 'https://images.unsplash.com/photo-1605540436563-5bca919ae766?w=200&h=120&fit=crop', href: '/india/jammu-kashmir' },
-          { name: 'Meghalaya', tours: 17, image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=200&h=120&fit=crop', href: '/india/meghalaya' },
-          { name: 'Karnataka', tours: 15, image: 'https://images.unsplash.com/photo-1618947882596-ff4834e35ab4?w=200&h=120&fit=crop', href: '/india/karnataka' },
-          { name: 'Goa', tours: 8, image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=200&h=120&fit=crop', href: '/india/goa' },
+          { name: 'Rajasthan', tours: 52, image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=200&h=120&fit=crop', href: '/packages?state=rajasthan' },
+          { name: 'Kerala', tours: 37, image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=200&h=120&fit=crop', href: '/packages?state=kerala' },
+          { name: 'Himachal Pradesh', tours: 39, image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=120&fit=crop', href: '/packages?state=himachal-pradesh' },
+          { name: 'Uttarakhand', tours: 25, image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=200&h=120&fit=crop', href: '/packages?state=uttarakhand' },
+          { name: 'Leh Ladakh', tours: 15, image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=200&h=120&fit=crop', href: '/packages?state=leh-ladakh' },
+          { name: 'Jammu And Kashmir', tours: 15, image: 'https://images.unsplash.com/photo-1605540436563-5bca919ae766?w=200&h=120&fit=crop', href: '/packages?state=jammu-kashmir' },
+          { name: 'Meghalaya', tours: 17, image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=200&h=120&fit=crop', href: '/packages?state=meghalaya' },
+          { name: 'Karnataka', tours: 15, image: 'https://images.unsplash.com/photo-1618947882596-ff4834e35ab4?w=200&h=120&fit=crop', href: '/packages?state=karnataka' },
+          { name: 'Goa', tours: 8, image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=200&h=120&fit=crop', href: '/packages?state=goa' },
         ],
         interests: [
-          { name: "Seniors' Special", href: '/india/seniors-special' },
-          { name: "Women's Special", href: '/india/womens-special' },
-          { name: "Honeymoon Special", href: '/india/honeymoon' },
+          { name: "Seniors' Special", href: '/packages?interest=seniors-special' },
+          { name: "Women's Special", href: '/packages?interest=womens-special' },
+          { name: "Honeymoon Special", href: '/packages?interest=honeymoon' },
         ],
         seasons: [
-          { name: "Nov to Feb", href: '/india/winter' },
-          { name: "Jul to Oct", href: '/india/monsoon' },
-          { name: "Mar to Jun", href: '/india/summer' },
+          { name: "Nov to Feb", href: '/packages?season=winter' },
+          { name: "Jul to Oct", href: '/packages?season=monsoon' },
+          { name: "Mar to Jun", href: '/packages?season=summer' },
         ],
         durations: [
-          { name: "More than 14 days", href: '/india/duration/long' },
-          { name: "10 to 14 days", href: '/india/duration/medium' },
-          { name: "6 to 9 days", href: '/india/duration/short' },
-          { name: "Less than 5 days", href: '/india/duration/weekend' },
+          { name: "More than 14 days", href: '/packages?duration=long' },
+          { name: "10 to 14 days", href: '/packages?duration=medium' },
+          { name: "6 to 9 days", href: '/packages?duration=short' },
+          { name: "Less than 5 days", href: '/packages?duration=weekend' },
         ]
       }
     },
@@ -208,8 +208,9 @@ const Header = () => {
     },
     { name: 'All Packages', href: '/packages', hasDropdown: false },
     { name: 'Inbound', href: '/inbound', hasDropdown: false },
-    { name: 'Forex', href: '/forex', hasDropdown: false },
-    { name: 'Gift a Tour', href: '/gift-a-tour', hasDropdown: false },
+  // { name: 'Forex', href: '/forex', hasDropdown: false },
+  // { name: 'Gift a Tour', href: '/gift-a-tour', hasDropdown: false },
+    { name: 'Blog', href: '/blogs', hasDropdown: false },
     { name: 'Contact Us', href: '/contact', hasDropdown: false },
   ];
 
@@ -352,19 +353,24 @@ const Header = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             {activeMenu === 'India' && (
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                {/* Column 1: By Zone */}
-                <div>
-                  <h3 className="text-gray-900 font-bold mb-3 text-lg border-b pb-2">Tour Packages By Zone</h3>
-                  <ul className="space-y-2">
-                    {navigationItems[0].dropdownContent?.zones?.map((zone) => (
-                      <li key={zone.name}>
-                        <Link href={zone.href} className="text-gray-700 hover:text-yellow-600 block py-1">
-                          {zone.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                <div className="col-span-4 mb-6">
+                  <Link href="/packages?category=india" className="inline-block bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-2 px-6 rounded-lg transition-colors">
+                    View All India Packages
+                  </Link>
                 </div>
+                  {/* Column 1: By Zone */}
+                  <div>
+                    <h3 className="text-gray-900 font-bold mb-3 text-lg border-b pb-2">Tour Packages By Zone</h3>
+                    <ul className="space-y-2">
+                      {navigationItems[0].dropdownContent?.zones?.map((zone) => (
+                        <li key={zone.name}>
+                          <Link href={zone.href} className="text-gray-700 hover:text-yellow-600 block py-1">
+                            {zone.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
                 {/* Column 2: By State */}
                 <div className="col-span-2">
@@ -497,13 +503,39 @@ const Header = () => {
             )}
 
             {activeMenu === 'Speciality Tours' && (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                {navigationItems[2].dropdownContent?.categories?.map((category) => (
-                  <Link key={category.name} href={category.href} className="flex items-center p-3 rounded-lg hover:bg-gray-100 transition duration-300">
-                    {category.icon}
-                    <span className="text-gray-800 font-medium">{category.name}</span>
-                  </Link>
-                ))}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {navigationItems[2].dropdownContent?.categories?.map((category, idx) => {
+                  // Direct Pexels/Unsplash image URLs for each category
+                  const images = [
+                    'https://images.pexels.com/photos/1707828/pexels-photo-1707828.jpeg', // seniors
+                    'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg', // women
+                    'https://images.unsplash.com/photo-1506744038136-46273834b3fb', // adventure
+                    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e', // cruise
+                    'https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg', // wellness
+                    'https://images.unsplash.com/photo-1464983953574-0892a716854b', // festival
+                  ];
+                  const imgUrl = images[idx] || images[0];
+                  return (
+                    <Link key={category.name} href={category.href} className="group">
+                      <div className="bg-white rounded-lg shadow-sm border hover:shadow-md transition duration-300 overflow-hidden flex flex-col h-full">
+                        <div className="relative h-28 w-full">
+                          <Image
+                            src={imgUrl}
+                            alt={category.name}
+                            fill
+                            className="object-cover"
+                            unoptimized
+                          />
+                        </div>
+                        <div className="flex-1 p-4 flex flex-col justify-center items-start">
+                          <div className="flex items-center mb-2">{category.icon}</div>
+                          <div className="font-semibold text-gray-900 group-hover:text-yellow-600 text-base mb-1">{category.name}</div>
+                          <div className="text-xs text-gray-500">Special curated experience</div>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             )}
 
@@ -519,13 +551,35 @@ const Header = () => {
             )}
 
             {activeMenu === 'Corporate Travel' && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {navigationItems[4].dropdownContent?.categories?.map((category) => (
-                  <Link key={category.name} href={category.href} className="flex items-center p-3 rounded-lg hover:bg-gray-100 transition duration-300">
-                    {category.icon}
-                    <span className="text-gray-800 font-medium">{category.name}</span>
-                  </Link>
-                ))}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-gradient-to-r from-blue-50 via-blue-100 to-blue-200 p-6 rounded-xl shadow-lg border border-blue-200">
+                {navigationItems[4].dropdownContent?.categories?.map((category, idx) => {
+                  const images = [
+                    'https://images.unsplash.com/photo-1461749280684-dccba630e2f6', // MICE
+                    'https://images.unsplash.com/photo-1515168833906-d2a3b82b1a48', // Team Outings
+                    'https://images.unsplash.com/photo-1504384308090-c894fdcc538d', // Corporate Retreats
+                  ];
+                  const imgUrl = images[idx] || images[0];
+                  return (
+                    <Link key={category.name} href={category.href} className="group">
+                      <div className="bg-white rounded-lg shadow-md border hover:shadow-xl transition duration-300 overflow-hidden flex flex-col h-full">
+                        <div className="relative h-28 w-full">
+                          <Image
+                            src={imgUrl}
+                            alt={category.name}
+                            fill
+                            className="object-cover"
+                            unoptimized
+                          />
+                        </div>
+                        <div className="flex-1 p-4 flex flex-col justify-center items-start">
+                          <div className="flex items-center mb-2">{category.icon}</div>
+                          <div className="font-semibold text-blue-900 group-hover:text-blue-600 text-base mb-1">{category.name}</div>
+                          <div className="text-xs text-blue-500">Corporate Experience</div>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             )}
           </div>

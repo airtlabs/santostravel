@@ -11,8 +11,6 @@ const PWAProvider = () => {
                 navigator.serviceWorker
                     .register('/sw.js', { scope: '/' })
                     .then((registration) => {
-                        console.log('Service Worker registration successful with scope: ', registration.scope);
-
                         // Check for updates immediately
                         registration.update();
 
@@ -31,8 +29,8 @@ const PWAProvider = () => {
                             }
                         });
                     })
-                    .catch((error) => {
-                        console.log('Service Worker registration failed: ', error);
+                    .catch(() => {
+                        // Service worker registration failed silently
                     });
             });
 
@@ -50,9 +48,7 @@ const PWAProvider = () => {
                 if (isMobile) {
                     setTimeout(() => {
                         Notification.requestPermission().then((permission) => {
-                            if (permission === 'granted') {
-                                console.log('Notification permission granted');
-                            }
+                            // Permission granted silently
                         });
                     }, 5000); // Ask after 5 seconds
                 }

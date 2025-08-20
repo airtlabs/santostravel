@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
 import {
     LayoutDashboard,
     Package,
@@ -11,7 +12,10 @@ import {
     LogOut,
     Plus,
     Search,
-    Bell
+    Bell,
+    Menu,
+    X,
+    FileText
 } from 'lucide-react';
 import ProtectedRoute from './ProtectedRoute';
 import { useAuth } from '@/contexts/AuthContext';
@@ -24,6 +28,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     const pathname = usePathname();
     const router = useRouter();
     const { user, signOut } = useAuth();
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const navigation = [
         {
@@ -43,6 +48,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             href: '/admin/bookings',
             icon: Users,
             current: pathname.startsWith('/admin/bookings')
+        },
+        {
+            name: 'Blog Posts',
+            href: '/admin/blogs',
+            icon: FileText,
+            current: pathname.startsWith('/admin/blogs')
         },
         {
             name: 'Analytics',
@@ -74,8 +85,84 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     return (
         <ProtectedRoute requireAdmin={true}>
             <div className="min-h-screen bg-gray-50">
-                {/* Sidebar */}
-                <div className="fixed inset-y-0 left-0 z-50 w-64 bg-slate-900">
+                {/* Mobile sidebar overlay */}
+                {sidebarOpen && (
+                    <div className="fixed inset-0 z-50 lg:hidden">
+                        <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
+                        <div className="fixed inset-y-0 left-0 z-50 w-64 bg-slate-900">
+                            {/* Mobile sidebar content */}
+                            <div className="flex h-16 shrink-0 items-center justify-between px-6 border-b border-slate-700">
+                                <Link href="/admin/dashboard" className="flex items-center" onClick={() => setSidebarOpen(false)}>
+                                    <img
+                                        src="/santos-logo.png"
+                                        alt="Santos.travel Admin"
+                                        className="h-8 w-auto"
+                                    />
+                                    <span className="ml-3 text-white font-semibold text-lg">Admin</span>
+                                </Link>
+                                <button
+                                    onClick={() => setSidebarOpen(false)}
+                                    className="text-slate-300 hover:text-white"
+                                >
+                                    <X className="h-6 w-6" />
+                                </button>
+                            </div>
+                            <nav className="flex flex-1 flex-col px-4 py-6">
+                                <ul role="list" className="flex flex-1 flex-col gap-y-7">
+                                    <li>
+                                        <ul role="list" className="-mx-2 space-y-1">
+                                            {navigation.map((item) => {
+                                                const Icon = item.icon;
+                                                return (
+                                                    <li key={item.name}>
+                                                        <Link
+                                                            href={item.href}
+                                                            onClick={() => setSidebarOpen(false)}
+                                                            className={`group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-colors ${item.current
+                                                                ? 'bg-yellow-600 text-white'
+                                                                : 'text-slate-300 hover:text-white hover:bg-slate-700'
+                                                                }`}
+                                                        >
+                                                            <Icon className="h-5 w-5 shrink-0" />
+                                                            {item.name}
+                                                        </Link>
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    </li>
+                                    <li className="mt-auto">
+                                        <div className="border-t border-slate-700 pt-6">
+                                            <Link
+                                                href="/admin/packages/new"
+                                                onClick={() => setSidebarOpen(false)}
+                                                className="group flex gap-x-3 rounded-md bg-yellow-600 hover:bg-yellow-700 p-2 text-sm leading-6 font-semibold text-white transition-colors"
+                                            >
+                                                <Plus className="h-5 w-5 shrink-0" />
+                                                New Package
+                                            </Link>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div className="border-t border-slate-700 pt-6">
+                                            <Link
+                                                href="/"
+                                                onClick={() => setSidebarOpen(false)}
+                                                className="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
+                                            >
+                                                <LogOut className="h-5 w-5 shrink-0" />
+                                                Back to Site
+                                            </Link>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                )}
+
+                {/* Desktop Sidebar */}
+                <div className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:block lg:w-64 lg:bg-slate-900">
                     {/* Logo */}
                     <div className="flex h-16 shrink-0 items-center px-6 border-b border-slate-700">
                         <Link href="/admin/dashboard" className="flex items-center">
@@ -143,10 +230,18 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 </div>
 
                 {/* Main content */}
-                <div className="pl-64">
+                <div className="lg:pl-64">
                     {/* Top bar */}
                     <div className="sticky top-0 z-40 bg-white shadow-sm border-b border-gray-200">
                         <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+                            {/* Mobile menu button */}
+                            <button
+                                onClick={() => setSidebarOpen(true)}
+                                className="lg:hidden p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+                            >
+                                <Menu className="h-6 w-6" />
+                            </button>
+
                             {/* Search */}
                             <div className="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-start">
                                 <div className="w-full max-w-lg lg:max-w-xs">
@@ -161,7 +256,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                                             id="search"
                                             name="search"
                                             className="block w-full rounded-md border-0 bg-gray-50 py-1.5 pl-10 pr-3 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-yellow-500 sm:text-sm sm:leading-6"
-                                            placeholder="Search packages, bookings..."
+                                            placeholder="Search..."
                                             type="search"
                                         />
                                     </div>
@@ -169,7 +264,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                             </div>
 
                             {/* Right side */}
-                            <div className="flex items-center gap-x-4 lg:gap-x-6">
+                            <div className="flex items-center gap-x-2 lg:gap-x-6">
                                 {/* Notifications */}
                                 <button
                                     type="button"
@@ -184,7 +279,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                                 </button>
 
                                 {/* User menu */}
-                                <div className="flex items-center gap-x-4">
+                                <div className="flex items-center gap-x-2 lg:gap-x-4">
                                     <div className="hidden lg:flex lg:flex-col lg:items-end lg:leading-6">
                                         <div className="font-semibold text-gray-900">{user?.name || 'Admin User'}</div>
                                         <div className="text-xs text-gray-600">{user?.email || 'admin@santos.travel'}</div>
@@ -198,7 +293,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                                         title="Sign Out"
                                     >
                                         <LogOut className="h-4 w-4" />
-                                        <span className="text-sm hidden sm:block">Sign Out</span>
+                                        <span className="text-sm hidden lg:block">Sign Out</span>
                                     </button>
                                 </div>
                             </div>
