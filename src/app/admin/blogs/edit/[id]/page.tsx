@@ -12,11 +12,12 @@ import {
     X
 } from 'lucide-react';
 
-const EditBlogPostPage = ({ params }: { params: { id: string } }) => {
+const EditBlogPostPage = ({ params }: { params: Promise<{ id: string }> }) => {
     const router = useRouter();
     const { updatePost, getPost } = useBlogPosts();
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(true);
+    const [resolvedParams, setResolvedParams] = useState<{ id: string } | null>(null);
     const [formData, setFormData] = useState({
         title: '',
         content: '',
@@ -30,9 +31,19 @@ const EditBlogPostPage = ({ params }: { params: { id: string } }) => {
     const [newTag, setNewTag] = useState('');
 
     useEffect(() => {
+        const loadParams = async () => {
+            const resolvedParams = await params;
+            setResolvedParams(resolvedParams);
+        };
+        loadParams();
+    }, [params]);
+
+    useEffect(() => {
+        if (!resolvedParams) return;
+        
         const loadPost = async () => {
             try {
-                const post = await getPost(params.id);
+                const post = await getPost(resolvedParams.id);
                 if (post) {
                     setFormData({
                         title: post.title,
@@ -58,7 +69,7 @@ const EditBlogPostPage = ({ params }: { params: { id: string } }) => {
         };
 
         loadPost();
-    }, [params.id, getPost, router]);
+    }, [resolvedParams, getPost, router]);
 
     const handleInputChange = (field: string, value: string) => {
         setFormData(prev => ({
@@ -90,9 +101,14 @@ const EditBlogPostPage = ({ params }: { params: { id: string } }) => {
             return;
         }
 
+        if (!resolvedParams) {
+            alert('Error: Unable to get post ID');
+            return;
+        }
+
         setLoading(true);
         try {
-            await updatePost(params.id, {
+            await updatePost(resolvedParams.id, {
                 ...formData,
                 status
             });

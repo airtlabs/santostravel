@@ -1,0 +1,6 @@
+flutter_app/
+santos_travel_mobile/
+node_modules/
+.git/
+*.log
+.DS_Store

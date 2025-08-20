@@ -6,20 +6,31 @@ import { useRouter } from 'next/navigation';
 import { Calendar, User, Tag, ArrowLeft, Share2, Clock } from 'lucide-react';
 import { BlogPost } from '@/hooks/useBlogPosts';
 
-const BlogPostPage = ({ params }: { params: { slug: string } }) => {
+const BlogPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
     const router = useRouter();
     const [post, setPost] = useState<BlogPost | null>(null);
     const [loading, setLoading] = useState(true);
     const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
+    const [resolvedParams, setResolvedParams] = useState<{ slug: string } | null>(null);
 
     useEffect(() => {
+        const loadParams = async () => {
+            const resolvedParams = await params;
+            setResolvedParams(resolvedParams);
+        };
+        loadParams();
+    }, [params]);
+
+    useEffect(() => {
+        if (!resolvedParams) return;
+        
         const fetchPost = async () => {
             try {
                 // Fetch all published posts first (since we need to find by slug)
                 const response = await fetch('/api/blogs?status=published');
                 if (response.ok) {
                     const data = await response.json();
-                    const foundPost = data.posts.find((p: BlogPost) => p.slug === params.slug);
+                    const foundPost = data.posts.find((p: BlogPost) => p.slug === resolvedParams.slug);
 
                     if (foundPost) {
                         setPost(foundPost);
@@ -45,7 +56,7 @@ const BlogPostPage = ({ params }: { params: { slug: string } }) => {
         };
 
         fetchPost();
-    }, [params.slug, router]);
+    }, [resolvedParams, router]);
 
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('en-US', {
