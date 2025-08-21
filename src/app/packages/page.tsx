@@ -118,7 +118,7 @@ const PackagesContent = () => {
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto mb-4"></div>
-                    <p className="text-gray-600">Loading packages...</p>
+                    <p className="text-black">Loading packages...</p>
                 </div>
             </div>
         );
@@ -145,8 +145,8 @@ const PackagesContent = () => {
             {/* Header */}
             <div className="bg-white shadow-sm border-b">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-4">Tour Packages</h1>
-                    <p className="text-gray-600">Discover amazing destinations with our curated travel packages</p>
+                    <h1 className="text-3xl font-bold text-black mb-4">Tour Packages</h1>
+                    <p className="text-black">Discover amazing destinations with our curated travel packages</p>
                 </div>
             </div>
 
@@ -157,8 +157,8 @@ const PackagesContent = () => {
                     <div className="lg:w-1/4">
                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-8">
                             <div className="flex items-center justify-between mb-6">
-                                <h2 className="text-lg font-semibold text-gray-900 flex items-center">
-                                    <Filter className="h-5 w-5 mr-2 text-gray-400" />
+                                <h2 className="text-lg font-semibold text-black flex items-center">
+                                    <Filter className="h-5 w-5 mr-2 text-black" />
                                     Filters
                                 </h2>
                                 <button
@@ -172,9 +172,9 @@ const PackagesContent = () => {
 
                             {/* Search */}
                             <div className="mb-6">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
+                                <label className="block text-sm font-medium text-black mb-2">Search</label>
                                 <div className="relative">
-                                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-black" />
                                     <input
                                         type="text"
                                         placeholder="Search packages..."
@@ -187,7 +187,7 @@ const PackagesContent = () => {
 
                             {/* Category Filter */}
                             <div className="mb-6">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                                <label className="block text-sm font-medium text-black mb-2">Category</label>
                                 <select
                                     value={selectedCategory}
                                     onChange={(e) => setSelectedCategory(e.target.value)}
@@ -204,7 +204,7 @@ const PackagesContent = () => {
 
                             {/* Destination Filter */}
                             <div className="mb-6">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Destination</label>
+                                <label className="block text-sm font-medium text-black mb-2">Destination</label>
                                 <select
                                     value={selectedDestination}
                                     onChange={(e) => setSelectedDestination(e.target.value)}
@@ -219,7 +219,7 @@ const PackagesContent = () => {
 
                             {/* Duration Filter */}
                             <div className="mb-6">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Duration</label>
+                                <label className="block text-sm font-medium text-black mb-2">Duration</label>
                                 <select
                                     value={selectedDuration}
                                     onChange={(e) => setSelectedDuration(e.target.value)}
@@ -234,7 +234,7 @@ const PackagesContent = () => {
 
                             {/* Price Range */}
                             <div className="mb-6">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Price Range (₹)</label>
+                                <label className="block text-sm font-medium text-black mb-2">Price Range (₹)</label>
                                 <div className="grid grid-cols-2 gap-2">
                                     <input
                                         type="number"
@@ -255,7 +255,7 @@ const PackagesContent = () => {
 
                             {/* Status Filter */}
                             <div className="mb-6">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                <label className="block text-sm font-medium text-black mb-2">Status</label>
                                 <select
                                     value={statusFilter}
                                     onChange={(e) => setStatusFilter(e.target.value)}
@@ -274,22 +274,22 @@ const PackagesContent = () => {
                         {/* Sort and Results Header */}
                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
                             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                <div className="text-sm text-gray-600">
-                                    Showing {filteredPackages.length} of {dbPackages.length} packages
-                                    {searchQuery && <span> for &quot;{searchQuery}&quot;</span>}
+                                <div className="text-sm text-black">
+                                    {filteredPackages.length} packages found
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <label className="text-sm font-medium text-gray-700">Sort by:</label>
+                                <div className="flex items-center gap-4">
+                                    <label className="text-sm font-medium text-black">Sort by:</label>
                                     <select
                                         value={sortBy}
                                         onChange={(e) => setSortBy(e.target.value)}
-                                        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                                        className="border border-gray-300 rounded-lg px-3 py-1 text-sm"
                                     >
                                         <option value="price-low">Price: Low to High</option>
                                         <option value="price-high">Price: High to Low</option>
                                         <option value="duration-short">Duration: Short to Long</option>
                                         <option value="duration-long">Duration: Long to Short</option>
                                         <option value="name">Name: A to Z</option>
+                                        <option value="newest">Newest First</option>
                                     </select>
                                 </div>
                             </div>
@@ -328,34 +328,34 @@ const PackagesContent = () => {
 
                                     {/* Package Content */}
                                     <div className="p-6">
-                                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-yellow-600 transition-colors">
+                                        <h3 className="text-xl font-bold text-black mb-2 group-hover:text-yellow-600 transition-colors">
                                             {pkg.title}
                                         </h3>
 
                                         {/* Description */}
-                                        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                                        <p className="text-black text-sm mb-3 line-clamp-2">
                                             {pkg.description || pkg.duration}
                                         </p>
 
                                         <div className="space-y-3 mb-4">
-                                            <div className="flex items-center text-sm text-gray-600">
-                                                <MapPin className="h-4 w-4 mr-2 text-gray-400" />
+                                            <div className="flex items-center text-sm text-black">
+                                                <MapPin className="h-4 w-4 mr-2 text-black" />
                                                 <span>{pkg.destination}</span>
                                             </div>
-                                            <div className="flex items-center justify-between text-sm text-gray-600">
+                                            <div className="flex items-center justify-between text-sm text-black">
                                                 <div className="flex items-center">
-                                                    <Calendar className="h-4 w-4 mr-2 text-gray-400" />
+                                                    <Calendar className="h-4 w-4 mr-2 text-black" />
                                                     <span>{pkg.duration}</span>
                                                 </div>
                                                 <div className="flex items-center">
-                                                    <Users className="h-4 w-4 mr-2 text-gray-400" />
+                                                    <Users className="h-4 w-4 mr-2 text-black" />
                                                     <span>Max {pkg.max_participants}</span>
                                                 </div>
                                             </div>
 
                                             {/* Best Time */}
-                                            <div className="flex items-center justify-end text-sm text-gray-600">
-                                                <span className="text-xs text-gray-500">
+                                            <div className="flex items-center justify-end text-sm text-black">
+                                                <span className="text-xs text-black">
                                                     Best time: {pkg.best_time || 'Any time'}
                                                 </span>
                                             </div>
@@ -365,12 +365,12 @@ const PackagesContent = () => {
                                         <div className="mb-4">
                                             <div className="flex flex-wrap gap-1">
                                                 {pkg.highlights && pkg.highlights.slice(0, 3).map((highlight, index) => (
-                                                    <span key={index} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                                                    <span key={index} className="text-xs bg-gray-100 text-black px-2 py-1 rounded-full">
                                                         {highlight}
                                                     </span>
                                                 ))}
                                                 {pkg.highlights && pkg.highlights.length > 3 && (
-                                                    <span className="text-xs text-gray-500">+{pkg.highlights.length - 3} more</span>
+                                                    <span className="text-xs text-black">+{pkg.highlights.length - 3} more</span>
                                                 )}
                                             </div>
                                         </div>
@@ -383,7 +383,7 @@ const PackagesContent = () => {
                                                         ₹{pkg.price.toLocaleString()}
                                                     </span>
                                                 </div>
-                                                <p className="text-xs text-gray-500">per person</p>
+                                                <p className="text-xs text-black">per person</p>
                                             </div>
                                             <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                                                 View Details
@@ -397,7 +397,7 @@ const PackagesContent = () => {
 
                         {filteredPackages.length === 0 && (
                             <div className="text-center py-12">
-                                <p className="text-gray-500 text-lg">No packages found matching your criteria.</p>
+                                <p className="text-black text-lg">No packages found matching your criteria.</p>
                                 <button
                                     onClick={clearFilters}
                                     className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg"
